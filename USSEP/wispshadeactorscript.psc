@@ -1,0 +1,54 @@
+Scriptname WispShadeActorScript extends ActiveMagicEffect  
+{Actor Script for the Wisp Shades}
+;======================================================================================;
+;	PROPERTIES	     /
+;===================/
+explosion property ExplosionIllusionLight01 auto
+VisualEffect Property WispFXAttachEffect Auto
+
+ObjectReference selfRef
+
+;======================================================================================;
+;	EVENTS	    /
+;=============/
+EVENT OnEffectStart(Actor Target, Actor Caster)
+		
+; 	debug.trace("SHADE: Effect Started")
+	selfRef = caster
+	
+	;USKP 2.0.1 - Stop this from attaching to the player.
+	if( selfRef == Game.GetPlayer() )
+		Return
+	EndIf
+		
+	int i = 20 ; recursion limiter for 3dLoaded check
+	while selfRef.is3dLoaded() == FALSE
+		; wait a bit for the 3d to load
+		if i >= 10
+; 			debug.trace("Recursion of limit ("+i+") hit by: "+self)
+			return
+		else
+			i+=1
+; 			debug.trace("While() recursion ("+i+")")
+			utility.wait(0.1)
+		endif
+	endWhile
+	; only attach FX once 3D is loaded
+	
+; 	debug.trace("SHADE: Past While loop, try to attach FX")
+	WispFXAttachEffect.Play(selfRef, -1)
+; 	debug.trace("SHADE: FX attach has been attempted")
+		
+ENDEVENT
+
+
+EVENT OnDying(Actor akKiller)
+
+	WispFXAttachEffect.Stop(selfRef)
+	objectReference myExplosion = selfRef.placeatme(ExplosionIllusionLight01) ;USSEP 4.3.7 Bug #35892
+	selfref.disable()
+	myExplosion.deletewhenable() ;USSEP 4.3.7 Bug #35892
+	selfref.delete()
+	selfref = None
+ENDEVENT
+
