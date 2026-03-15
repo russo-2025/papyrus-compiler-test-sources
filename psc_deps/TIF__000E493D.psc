@@ -6,8 +6,8 @@ Scriptname TIF__000E493D Extends TopicInfo Hidden
 Function Fragment_0(ObjectReference akSpeakerRef)
 Actor akSpeaker = akSpeakerRef as Actor
 ;BEGIN CODE
-game.getplayer().removeitem(gold, HDMarkarthAlchemy.value as int)
-decoratemarker.enable()
+game.getplayer().removeitem(gold, HDMarkarthChildRoom.value as int)
+(GetOwningQuest() as BYOHRelationshipAdoptionHousePurchase).Markarth_EnableChildBedroom()
 ;END CODE
 EndFunction
 ;END FRAGMENT
@@ -20,4 +20,4 @@ MiscObject Property Gold  Auto
 
 ObjectReference Property DecorateMarker  Auto  
 
-GlobalVariable Property HDMarkarthAlchemy  Auto  
+GlobalVariable Property HDMarkarthChildRoom  Auto  

@@ -55,6 +55,21 @@ Event OnUpdate()
 
 endEvent
 
+GlobalVariable Property DLC1VampireLordDisallow auto
+DLC1PlayerVampireChangeScript Property VampChangeTracker auto
+Race Property VampBeast auto
+
+Function VampLock()
+	if (Game.GetPlayer().GetRace() == VampBeast)
+		VampChangeTracker.ShiftBack()
+	endif
+	DLC1VampireLordDisallow.SetValueInt(1)
+EndFunction
+
+Function VampUnlock()
+	DLC1VampireLordDisallow.SetValueInt(0)
+EndFunction
+
 
 Spell Property TGNightingaleShadowMercer  Auto  
 

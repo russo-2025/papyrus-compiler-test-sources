@@ -11,7 +11,7 @@ ReferenceAlias Property Alias_Lydia Auto
 Function Fragment_0()
 ;BEGIN CODE
 ; FOR PATCH 1.5
-debug.trace("PATCH 1.5 QUEST HAS STARTED")
+; debug.trace("PATCH 1.5 QUEST HAS STARTED")
 
 ; 77808 - check for MQ202 failing to start
 if MQ201.GetStageDone(230) && MQ202.GetStage() == 0

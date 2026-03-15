@@ -7,6 +7,7 @@ import form
 ;===============================================
 
 Actor selfRef
+Keyword Property DLC1LDAetherialSummon Auto
 VisualEffect Property FXDwarvenSpiderEffect Auto
 Explosion Property ExplosionDwarvenSpider Auto
 
@@ -20,7 +21,7 @@ Explosion Property ExplosionDwarvenSpider Auto
 	ENDEVENT
 	
 	EVENT onDying(actor myKiller)
-		if selfRef.GetLevel() > 7
+		if (selfRef.GetLevel() > 7 && !selfRef.IsCommandedActor() && !selfRef.HasKeyword(DLC1LDAetherialSummon))
 			selfRef.PlaySubGraphAnimation( "StopEffect" )
 			FXDwarvenSpiderEffect.Stop(selfRef)
 			selfRef.placeAtMe(ExplosionDwarvenSpider)

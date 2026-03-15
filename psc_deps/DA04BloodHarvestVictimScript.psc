@@ -29,12 +29,12 @@ EndFunction
 
 Function InitializeOrShutdownQuest()
 ;/ 	if !IsElf()
- 		Debug.Trace("DA04BH: Killed actor is not an elf, shutting down.")
+;  		Debug.Trace("DA04BH: Killed actor is not an elf, shutting down.")
 		GetOwningQuest().SetStage(100)
 		return
 	endif
 	
- 	Debug.Trace("DA04BH: Killed an elf, let's keep moving here.")
+;  	Debug.Trace("DA04BH: Killed an elf, let's keep moving here.")
 	GetReference().BlockActivation()
 	minutesSinceDeath = 0
 	GetRef().RegisterForUpdate(updateInterval)

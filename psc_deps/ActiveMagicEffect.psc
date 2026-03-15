@@ -308,6 +308,10 @@ EndEvent
 Event OnLocationChange(Location akOldLoc, Location akNewLoc)
 EndEvent
 
+; Received when the lycanthropy state of this actor changes (when SendLycanthropyStateChanged is called)
+Event OnLycanthropyStateChanged(bool abIsWerewolf)
+EndEvent
+
 ; Event received when this actor equips something - akReference may be None if object is not persistent
 Event OnObjectEquipped(Form akBaseObject, ObjectReference akReference)
 EndEvent
@@ -337,7 +341,108 @@ EndEvent
 Event OnPlayerBowShot(Weapon akWeapon, Ammo akAmmo, float afPower, bool abSunGazing)
 EndEvent
 
+; Received when the player finishes fast travel, gives the duration of game time the travel took
+Event OnPlayerFastTravelEnd(float afTravelGameTimeHours)
+EndEvent
+
 ; Received immediately after the player has loaded a save game. A good time to check for additional content.
 Event OnPlayerLoadGame()
 EndEvent
 
+; Received when StartVampireFeed is called on an actor
+Event OnVampireFeed(Actor akTarget)
+EndEvent
+
+; Received when the vampirism state of this actor changes (when SendVampirismStateChanged is called)
+Event OnVampirismStateChanged(bool abIsVampire)
+EndEvent
+
+
+; SKSE64 additions built 2022-09-21 00:46:55.729000 UTC
+; Additional useful effect information
+float Function GetDuration() native
+float Function GetTimeElapsed() native
+
+; Registers for OnKeyDown and OnKeyUp events for the given keycode.
+Function RegisterForKey(int keyCode) native
+Function UnregisterForKey(int keyCode) native
+Function UnregisterForAllKeys() native
+
+Event OnKeyDown(int keyCode)
+EndEvent
+
+Event OnKeyUp(int keyCode, float holdTime)
+EndEvent
+
+; Registers for OnControlDown and OnControlUp events for the given control.
+; For a list of valid controls, see Input.psc.
+Function RegisterForControl(string control) native
+Function UnregisterForControl(string control) native
+Function UnregisterForAllControls() native
+
+Event OnControlDown(string control)
+EndEvent
+
+Event OnControlUp(string control, float holdTime)
+EndEvent
+
+; Registers for OnMenuOpen and OnMenuClose events for the given menu.
+; Registrations have to be refreshed after each game load.
+; For a list of valid menu names, see UI.psc.
+Function RegisterForMenu(string menuName) native
+Function UnregisterForMenu(string menuName) native
+Function UnregisterForAllMenus() native
+
+Event OnMenuOpen(string menuName)
+endEvent
+
+Event OnMenuClose(string menuName)
+endEvent
+
+; Registers a custom event callback for given event name.
+; Registrations have to be refreshed after each game load.
+;
+;	Examples:
+;		RegisterForModEvent("myCustomEvent", "MyModEventCallback")
+;
+;	Event signature of custom event callbacks:
+;		Event MyModEventCallback(string eventName, string strArg, float numArg, Form sender)
+;		endEvent
+;
+Function RegisterForModEvent(string eventName, string callbackName) native
+Function UnregisterForModEvent(string eventName) native
+Function UnregisterForAllModEvents() native
+
+; Sends custom event with given generic parameters.
+Function SendModEvent(string eventName, string strArg = "", float numArg = 0.0) native
+
+; See Form.psc
+Function RegisterForCameraState() native
+Function UnregisterForCameraState() native
+
+Event OnPlayerCameraState(int oldState, int newState)
+EndEvent
+
+; See Form.psc
+Function RegisterForCrosshairRef() native
+Function UnregisterForCrosshairRef() native
+	
+Event OnCrosshairRefChange(ObjectReference ref)
+EndEvent
+
+; See Form.psc
+Function RegisterForActorAction(int actionType) native
+Function UnregisterForActorAction(int actionType) native
+
+Event OnActorAction(int actionType, Actor akActor, Form source, int slot)
+EndEvent
+
+; Registers the script for when a QueueNiNodeUpdate is called
+Function RegisterForNiNodeUpdate() native
+Function UnregisterForNiNodeUpdate() native
+
+Event OnNiNodeUpdate(ObjectReference akActor)
+EndEvent
+
+; returns the magnitude of the active effect
+float Function GetMagnitude() native

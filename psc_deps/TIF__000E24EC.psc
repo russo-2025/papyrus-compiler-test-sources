@@ -7,7 +7,7 @@ Function Fragment_0(ObjectReference akSpeakerRef)
 Actor akSpeaker = akSpeakerRef as Actor
 ;BEGIN CODE
 game.getplayer().removeitem(gold, HDSolitudeLiving.value as int)
-decoratemarker.enable()
+(GetOwningQuest() as BYOHRelationshipAdoptionHousePurchase).Solitude_EnableLivingRoom()
 ;END CODE
 EndFunction
 ;END FRAGMENT

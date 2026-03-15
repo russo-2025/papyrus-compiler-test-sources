@@ -10,7 +10,7 @@ bool property isOpen = false	auto conditional
 bool property doOnce = false auto
 {set to true to open/close on first activation only}
 
-bool property isAnimating = false auto Hidden
+bool property isAnimating = false auto Hidden Conditional
 {is the activator currently animating from one state to another?}
 
 string property openAnim = "open" auto

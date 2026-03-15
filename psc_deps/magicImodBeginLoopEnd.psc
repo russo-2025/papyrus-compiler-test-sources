@@ -57,7 +57,6 @@ Event OnEffectStart(Actor Target, Actor Caster)
 		endif
 	endif
 
-
 EndEvent
 
 Event OnEffectFinish(Actor Target, Actor Caster)

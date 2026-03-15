@@ -47,3 +47,6 @@ Function SetKeywordData(Keyword akKeyword, float afData) native
 
 ; Sets this location as cleared or not
 Function SetCleared(bool abCleared = true) native
+
+; SKSE64 additions built 2022-09-21 00:46:55.729000 UTC
+Location Function GetParent() native

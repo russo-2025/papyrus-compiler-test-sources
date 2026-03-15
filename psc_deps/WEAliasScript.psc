@@ -29,9 +29,14 @@ bool Property DisableOnUnload = false Auto
 bool Property KillOnLoad = false Auto
 {Default = FALSE: Should this alias kill itself when it loads}
 
+bool Property DisintegrateOnLoad = false Auto
+{Default = FALSE: Should this alias kill and disintegrate itself when it loads}
+
 Faction Property PutInThisFactionOnLoad Auto
 {Optional: Put alias into this faction on load. Useful for setting up a faction that hates itself if you want to pacify things and yet make them attack each other.}
 
+Activator property DefaultAshPile1 Auto
+{The ash pile to use when disintegrating this actor.}
 
 bool attached	;My cell has attached or I moved into an attached cell   (OR - rare/impossible: tried to detach before ever trying to attach)
 bool detached	;My cell has detached or I moved into a detached cell   (OR - rare/impossible: tried to detach before ever trying to attach)
@@ -114,12 +119,22 @@ Event OnLoad()
 		GetActorReference().AddToFaction(PutInThisFactionOnLoad)
 	EndIf
 	
-	if KillOnLoad
+	if KillOnLoad || DisintegrateOnLoad
 		GetActorReference().kill()
 	EndIf
 	
 ; 	;debug.trace(self + "OnLoad()")
 	
+EndEvent
+
+Event OnDying(Actor akKiller)
+	if (DisintegrateOnLoad)
+		GetActorReference().SetAlpha(0, False)
+		GetActorReference().SetCriticalStage(GetActorReference().CritStage_DisintegrateEnd)
+		GetActorReference().AttachAshPile(DefaultAshPile1)
+		Utility.Wait(1.65)
+		GetActorReference().SetCriticalStage(GetActorReference().CritStage_DisintegrateEnd)
+	EndIf
 EndEvent
 
 Event OnUnload()

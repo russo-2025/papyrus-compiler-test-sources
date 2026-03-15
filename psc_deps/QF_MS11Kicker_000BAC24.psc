@@ -7,11 +7,11 @@ Function Fragment_0()
 ;BEGIN CODE
 EnterWindhelmCount.SetValueInt(EnterWindhelmCount.GetValueInt() + 1)
 
-Debug.Trace("MS11: Counting entrance to Windhelm -- " + EnterWindhelmCount.GetValueInt())
+; Debug.Trace("MS11: Counting entrance to Windhelm -- " + EnterWindhelmCount.GetValueInt())
 
 if ((EnterWindhelmCount.GetValueInt() >= 4))
 	if (  (GameHour.GetValueInt() >= 19) || (GameHour.GetValueInt() < 7)  )
- 		Debug.Trace("MS11: Kicking quest start on Windhelm entrance #" + EnterWindhelmCount.GetValueInt())
+;  		Debug.Trace("MS11: Kicking quest start on Windhelm entrance #" + EnterWindhelmCount.GetValueInt())
 		MS11.Start()
 	endif
 endif

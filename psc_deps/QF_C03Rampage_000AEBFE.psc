@@ -2,49 +2,49 @@
 ;NEXT FRAGMENT INDEX 7
 Scriptname QF_C03Rampage_000AEBFE Extends Quest Hidden
 
-;BEGIN ALIAS PROPERTY Player
-;ALIAS PROPERTY TYPE referencealias
-referencealias Property Alias_Player Auto
+;BEGIN ALIAS PROPERTY Kodlak
+;ALIAS PROPERTY TYPE ReferenceAlias
+ReferenceAlias Property Alias_Kodlak Auto
 ;END ALIAS PROPERTY
 
-;BEGIN ALIAS PROPERTY Njada
-;ALIAS PROPERTY TYPE referencealias
-referencealias Property Alias_Njada Auto
+;BEGIN ALIAS PROPERTY Player
+;ALIAS PROPERTY TYPE ReferenceAlias
+ReferenceAlias Property Alias_Player Auto
 ;END ALIAS PROPERTY
 
 ;BEGIN ALIAS PROPERTY Ria
-;ALIAS PROPERTY TYPE referencealias
-referencealias Property Alias_Ria Auto
-;END ALIAS PROPERTY
-
-;BEGIN ALIAS PROPERTY Kodlak
-;ALIAS PROPERTY TYPE referencealias
-referencealias Property Alias_Kodlak Auto
+;ALIAS PROPERTY TYPE ReferenceAlias
+ReferenceAlias Property Alias_Ria Auto
 ;END ALIAS PROPERTY
 
 ;BEGIN ALIAS PROPERTY Athis
-;ALIAS PROPERTY TYPE referencealias
-referencealias Property Alias_Athis Auto
-;END ALIAS PROPERTY
-
-;BEGIN ALIAS PROPERTY Farkas
-;ALIAS PROPERTY TYPE referencealias
-referencealias Property Alias_Farkas Auto
-;END ALIAS PROPERTY
-
-;BEGIN ALIAS PROPERTY Vilkas
-;ALIAS PROPERTY TYPE referencealias
-referencealias Property Alias_Vilkas Auto
+;ALIAS PROPERTY TYPE ReferenceAlias
+ReferenceAlias Property Alias_Athis Auto
 ;END ALIAS PROPERTY
 
 ;BEGIN ALIAS PROPERTY Torvar
-;ALIAS PROPERTY TYPE referencealias
-referencealias Property Alias_Torvar Auto
+;ALIAS PROPERTY TYPE ReferenceAlias
+ReferenceAlias Property Alias_Torvar Auto
+;END ALIAS PROPERTY
+
+;BEGIN ALIAS PROPERTY Njada
+;ALIAS PROPERTY TYPE ReferenceAlias
+ReferenceAlias Property Alias_Njada Auto
+;END ALIAS PROPERTY
+
+;BEGIN ALIAS PROPERTY Vilkas
+;ALIAS PROPERTY TYPE ReferenceAlias
+ReferenceAlias Property Alias_Vilkas Auto
+;END ALIAS PROPERTY
+
+;BEGIN ALIAS PROPERTY Farkas
+;ALIAS PROPERTY TYPE ReferenceAlias
+ReferenceAlias Property Alias_Farkas Auto
 ;END ALIAS PROPERTY
 
 ;BEGIN ALIAS PROPERTY Aela
-;ALIAS PROPERTY TYPE referencealias
-referencealias Property Alias_Aela Auto
+;ALIAS PROPERTY TYPE ReferenceAlias
+ReferenceAlias Property Alias_Aela Auto
 ;END ALIAS PROPERTY
 
 ;BEGIN FRAGMENT Fragment_5
@@ -61,6 +61,9 @@ kmyQuest.RestorePlayerRace()
 RampageEndTrigger.Delete()
 UnderforgeDoor.BlockActivation(false)
 WhiterunMainDoor.BlockActivation(false)
+
+; reallow vampire lord
+BlockVamp.SetValue(0)
 
 Stop()
 ;END CODE
@@ -90,3 +93,5 @@ ObjectReference Property UnderforgeDoor  Auto
 ObjectReference Property WhiterunMainDoor  Auto  
 
 ObjectReference Property RampageEndTrigger  Auto  
+
+GlobalVariable Property BlockVamp  Auto  

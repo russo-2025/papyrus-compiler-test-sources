@@ -2,14 +2,14 @@
 ;NEXT FRAGMENT INDEX 16
 Scriptname QF_Favor255_000A34CE Extends Quest Hidden
 
+;BEGIN ALIAS PROPERTY QuestGiver
+;ALIAS PROPERTY TYPE ReferenceAlias
+ReferenceAlias Property Alias_QuestGiver Auto
+;END ALIAS PROPERTY
+
 ;BEGIN ALIAS PROPERTY Location
 ;ALIAS PROPERTY TYPE LocationAlias
 LocationAlias Property Alias_Location Auto
-;END ALIAS PROPERTY
-
-;BEGIN ALIAS PROPERTY Questgiver
-;ALIAS PROPERTY TYPE ReferenceAlias
-ReferenceAlias Property Alias_Questgiver Auto
 ;END ALIAS PROPERTY
 
 ;BEGIN ALIAS PROPERTY Hold
@@ -17,25 +17,15 @@ ReferenceAlias Property Alias_Questgiver Auto
 LocationAlias Property Alias_Hold Auto
 ;END ALIAS PROPERTY
 
+;BEGIN ALIAS PROPERTY PlayerHousecarl
+;ALIAS PROPERTY TYPE ReferenceAlias
+ReferenceAlias Property Alias_PlayerHousecarl Auto
+;END ALIAS PROPERTY
+
 ;BEGIN ALIAS PROPERTY JarlWeapon
 ;ALIAS PROPERTY TYPE ReferenceAlias
 ReferenceAlias Property Alias_JarlWeapon Auto
 ;END ALIAS PROPERTY
-
-;BEGIN FRAGMENT Fragment_12
-Function Fragment_12()
-;BEGIN CODE
-; player completes the favor successfully
-Alias_QuestGiver.GetActorReference().RemoveFromFaction(Favor255QuestGiverFaction)
-Alias_QuestGiver.GetActorReference().SetRelationshipRank(Game.GetPlayer(), 3)
-pFavorJarlsMakeFriends.GetOutofJailCard(Alias_QuestGiver.GetActorRef())
-Alias_JarlWeapon.GetRef().Enable()
-Game.GetPlayer().AddItem(Alias_JarlWeapon.GetRef())
-
-SetStage(200)
-;END CODE
-EndFunction
-;END FRAGMENT
 
 ;BEGIN FRAGMENT Fragment_5
 Function Fragment_5()
@@ -52,6 +42,21 @@ kmyquest.FavorStartUp()
 
 ;poll to see if the Jarl changes
 Alias_QuestGiver.RegisterForUpdate(5)
+;END CODE
+EndFunction
+;END FRAGMENT
+
+;BEGIN FRAGMENT Fragment_4
+Function Fragment_4()
+;BEGIN AUTOCAST TYPE FavorChangeLocationQuestScript
+Quest __temp = self as Quest
+FavorChangeLocationQuestScript kmyQuest = __temp as FavorChangeLocationQuestScript
+;END AUTOCAST
+;BEGIN CODE
+;shut down the favor
+;Note you don't need to complete objectives or Stop the quest. 
+;The FavorShutDown function handles that
+kmyQuest.FavorShutDown()
 ;END CODE
 EndFunction
 ;END FRAGMENT
@@ -78,17 +83,20 @@ EndIf
 EndFunction
 ;END FRAGMENT
 
-;BEGIN FRAGMENT Fragment_4
-Function Fragment_4()
-;BEGIN AUTOCAST TYPE FavorChangeLocationQuestScript
-Quest __temp = self as Quest
-FavorChangeLocationQuestScript kmyQuest = __temp as FavorChangeLocationQuestScript
-;END AUTOCAST
+;BEGIN FRAGMENT Fragment_12
+Function Fragment_12()
 ;BEGIN CODE
-;shut down the favor
-;Note you don't need to complete objectives or Stop the quest. 
-;The FavorShutDown function handles that
-kmyQuest.FavorShutDown()
+; player completes the favor successfully
+Alias_QuestGiver.GetActorReference().RemoveFromFaction(Favor255QuestGiverFaction)
+Alias_QuestGiver.GetActorReference().SetRelationshipRank(Game.GetPlayer(), 3)
+pFavorJarlsMakeFriends.GetOutofJailCard(Alias_QuestGiver.GetActorRef())
+Alias_JarlWeapon.GetRef().Enable()
+Game.GetPlayer().AddItem(Alias_JarlWeapon.GetRef())
+
+; BYOH - enable new housecarl
+Alias_PlayerHousecarl.GetActorRef().Enable()
+
+SetStage(200)
 ;END CODE
 EndFunction
 ;END FRAGMENT

@@ -2,11 +2,6 @@
 ;NEXT FRAGMENT INDEX 12
 Scriptname QF_VC01_0005C625 Extends Quest Hidden
 
-;BEGIN ALIAS PROPERTY MS05Falion
-;ALIAS PROPERTY TYPE ReferenceAlias
-ReferenceAlias Property Alias_MS05Falion Auto
-;END ALIAS PROPERTY
-
 ;BEGIN ALIAS PROPERTY MS05SummoningCircleMarker
 ;ALIAS PROPERTY TYPE ReferenceAlias
 ReferenceAlias Property Alias_MS05SummoningCircleMarker Auto
@@ -22,6 +17,29 @@ ReferenceAlias Property Alias_MS05FalionsSoulGem Auto
 ReferenceAlias Property Alias_VC01StartMarker Auto
 ;END ALIAS PROPERTY
 
+;BEGIN ALIAS PROPERTY MS05Falion
+;ALIAS PROPERTY TYPE ReferenceAlias
+ReferenceAlias Property Alias_MS05Falion Auto
+;END ALIAS PROPERTY
+
+;BEGIN FRAGMENT Fragment_1
+Function Fragment_1()
+;BEGIN CODE
+setObjectiveDisplayed (50)
+;END CODE
+EndFunction
+;END FRAGMENT
+
+;BEGIN FRAGMENT Fragment_3
+Function Fragment_3()
+;BEGIN CODE
+SetObjectiveCompleted(100)
+setObjectiveDisplayed (150)
+game.getplayer().removeitem(BlackSoulGem)
+;END CODE
+EndFunction
+;END FRAGMENT
+
 ;BEGIN FRAGMENT Fragment_4
 Function Fragment_4()
 ;BEGIN CODE
@@ -30,6 +48,7 @@ AchievementsQuest.IncSideQuests()
 (PlayerVampireQuest as PlayerVampireQuestScript).VampireCure(Game.Getplayer())
 Alias_MS05Falion.GetActorRef().RemoveItem(Alias_MS05FalionsSoulGem.GetRef())
 stop()
+DLC1VampireLordDisallow.Value = 0
 ;END CODE
 EndFunction
 ;END FRAGMENT
@@ -64,12 +83,15 @@ setObjectiveDisplayed (100)
 EndFunction
 ;END FRAGMENT
 
-;BEGIN FRAGMENT Fragment_3
-Function Fragment_3()
+;BEGIN FRAGMENT Fragment_9
+Function Fragment_9()
 ;BEGIN CODE
-SetObjectiveCompleted(100)
-setObjectiveDisplayed (150)
-game.getplayer().removeitem(BlackSoulGem)
+;Ritual is complete.
+
+Alias_MS05Falion.GetReference().Say(VC01RitualcompleteDialogueTopic)
+
+Utility.Wait(1)
+Setstage(200)
 ;END CODE
 EndFunction
 ;END FRAGMENT
@@ -79,28 +101,10 @@ Function Fragment_7()
 ;BEGIN CODE
 setObjectiveCompleted(175)
 setObjectiveDisplayed (185)
+DLC1VampireLordDisallow.Value = 1
+Game.GetPlayer().RemoveSpell(DLC1VampireChange)
 Scene_VC01VampirismCureRitual.Start()
 Alias_MS05Falion.GetActorReference().EvaluatePackage()
-;END CODE
-EndFunction
-;END FRAGMENT
-
-;BEGIN FRAGMENT Fragment_1
-Function Fragment_1()
-;BEGIN CODE
-setObjectiveDisplayed (50)
-;END CODE
-EndFunction
-;END FRAGMENT
-
-;BEGIN FRAGMENT Fragment_9
-Function Fragment_9()
-;BEGIN CODE
-;Ritual is complete.
-
-Alias_MS05Falion.GetReference().Say(VC01RitualcompleteDialogueTopic)
-Utility.Wait(1)
-Setstage(200)
 ;END CODE
 EndFunction
 ;END FRAGMENT
@@ -126,3 +130,7 @@ Quest Property PlayerVampireQuest  Auto
 AchievementsScript Property AchievementsQuest Auto
 
 Topic Property VC01RitualCompleteDialogueTopic  Auto  
+
+GlobalVariable Property DLC1VampireLordDisallow  Auto  
+
+SPELL Property DLC1VampireChange  Auto  

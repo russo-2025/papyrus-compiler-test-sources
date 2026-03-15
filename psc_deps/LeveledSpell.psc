@@ -5,3 +5,13 @@ Function AddForm(Form apForm, int aiLevel) native
 
 ; Removes all script added forms from this leveled list
 Function Revert() native
+
+; SKSE64 additions built 2022-09-21 00:46:55.729000 UTC
+int function GetChanceNone() native
+Function SetChanceNone(int chance) native
+
+int Function GetNumForms() native
+Form Function GetNthForm(int n) native
+
+int Function GetNthLevel(int n) native
+Function SetNthLevel(int n, int level) native

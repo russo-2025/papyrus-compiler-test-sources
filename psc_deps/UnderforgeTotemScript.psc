@@ -13,7 +13,7 @@ CompanionsHousekeepingScript Property chs auto
 
 
 Event OnActivate(ObjectReference akActivator)
-	if (Game.GetPlayer() == akActivator)
+	if (Game.GetPlayer() == akActivator && chs.PlayerHasBeastBlood)
 ; 		Debug.Trace("WEREWOLF: Learning " + Howl + " via " + HowlWord1 + ", " + HowlWord2 + ", " + HowlWord3)
 		Effect01.Play(self, 2.0, Game.GetPlayer())
 		Effect02.Play(Game.GetPlayer(), 2.0, self)

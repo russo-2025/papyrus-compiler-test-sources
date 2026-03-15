@@ -22,19 +22,29 @@ EVENT OnLoad()
 	PartnerLever = GetLinkedRef(LinkCustom02)
 endEVENt
 
+Function LowerDrawbridge()
+	Debug.Trace(self + "LowerDrawbridge()")
+	Drawbridge.PlayGamebryoAnimation("Backward", TRUE)
+	Collision.Disable()
+EndFunction
+
+Function RaiseDrawbridge()
+	Debug.Trace(self + "RaiseDrawbridge()")
+	Drawbridge.PlayGamebryoAnimation("Forward", TRUE)
+	Collision.Enable()
+EndFunction
+
 STATE ReadyForClose
 	
 	EVENT onActivate(ObjectReference TriggerRef)
 		if (CWSiege as CWSiegeScript).IsAttack()
-			Drawbridge.PlayGamebryoAnimation("Forward", TRUE)
-			Collision.Enable()
+			RaiseDrawbridge()
 			GoToState("Done")
 		else
 			if TriggerRef == GetPlayer()
 				; Player cannot activate this on defense
 			else
-				Drawbridge.PlayGamebryoAnimation("Forward", TRUE)
-				Collision.Enable()
+				RaiseDrawbridge()
 				GoToState("Done")
 			endif
 		endif
@@ -46,15 +56,13 @@ AUTO STATE ReadyForOpen
 
 	EVENT onActivate(ObjectReference TriggerRef)
 		if (CWSiege as CWSiegeScript).IsAttack()
-			Drawbridge.PlayGamebryoAnimation("Backward", TRUE)
-			Collision.Disable()
+			LowerDrawbridge()
 			GoToState("Done")
 		else
 			if TriggerRef == GetPlayer()
 				; Player cannot activate this on defense
 			else
-				Drawbridge.PlayGamebryoAnimation("Backward", TRUE)
-				Collision.Disable()
+				LowerDrawbridge()
 				(PartnerLever as WRDrawBridge01SCRIPT).GoToState("Done")
 				GoToState("Done")
 			endif

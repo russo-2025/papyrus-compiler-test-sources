@@ -12,7 +12,7 @@ GlobalVariable Property HPWhiterun  Auto
 GlobalVariable Property HPWindhelm  Auto  
 GlobalVariable Property HPSolitude  Auto  
 GlobalVariable Property HPRiften  Auto  
-GlobalVariable Property HPMarkarth  Auto  
+GlobalVariable Property HPMarkarth  Auto
 bool Property WhiterunHousecarlGreet Auto conditional
 
 function PurchaseHouse(cell HouseInterior, key HouseKey, book DecoratingGuide, globalvariable GoldAmount)

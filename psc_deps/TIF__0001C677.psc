@@ -17,3 +17,7 @@ Book Property Book1 Auto
 Book Property Book2 Auto
 
 Scene Property GetBooks  Auto  
+
+Quest Property pDLC1VQElderHandler  Auto  
+
+GlobalVariable Property pDLC1VQElderHandlerGlob  Auto  

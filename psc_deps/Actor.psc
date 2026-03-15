@@ -142,12 +142,20 @@ endFunction
 ; Gets the specified actor value - returns 0 and logs an error if the value is unknown
 float Function GetActorValue(string asValueName) native
 
+; Gets the specified actor value's max, taking into account buffs/debuffs
+float Function GetActorValueMax(string asValueName) native
+
 ; Gets the specified actor value as a percentage of its max value - from 0 to 1
 float Function GetActorValuePercentage(string asValueName) native
 
 ; Alias for GetActorValue - retrives the specified actor value
 float Function GetAV(string asValueName)
   return GetActorValue(asValueName)
+EndFunction
+
+; Alias of GetActorValueMax - retrives actor value's max, taking into account buffs/debuffs
+float Function GetAVMax(string asValueName)
+	return GetActorValueMax(asValueName)
 EndFunction
 
 ; Alias for GetActorValuePercentage - gets the actor value as a percent of max
@@ -180,6 +188,9 @@ Package Function GetCurrentPackage() native
 
 ; Gets this actor's current dialogue target
 Actor Function GetDialogueTarget() native
+
+; Obtain the armor currently equipped in the specified slot
+Armor Function GetEquippedArmorInSlot(int aiSlot) native
 
 ; Obtains the item quipped in the specified hand (0 - Left hand, 1 - Right hand)
 ; Return values are:
@@ -289,6 +300,9 @@ int Function GetSleepState() native
 ; Gets the voice recovery timer from the actor
 float Function GetVoiceRecoveryTime() native
 
+; Gets the total "warmth rating" for this actor
+float Function GetWarmthRating() native
+
 ; Checks to see if this actor has the specified association with the other actor - or anyone (if no actor is passed)
 bool Function HasAssociation(AssociationType akAssociation, Actor akOther = None) native
 
@@ -384,6 +398,9 @@ bool Function IsIntimidated() native
 
 ; Is the actor on a mount?
 bool Function IsOnMount() native
+
+; Is the actor over-encumbered?
+bool Function IsOverEncumbered() native
 
 ; Checks to see if this actor the last ridden horse of the player
 bool Function IsPlayersLastRiddenHorse() native
@@ -491,8 +508,14 @@ EndFunction
 ; Has this actor behave as if assaulted
 Function SendAssaultAlarm() native
 
+; Tell anyone who cares that the lycanthropy state of this actor has changed
+Function SendLycanthropyStateChanged(bool abIsWerewolf) native
+
 ; Has this actor behave as if they caught the target trespassing
 Function SendTrespassAlarm(Actor akCriminal) native
+
+; Tell anyone who cares that the vampirism state of this actor has changed
+Function SendVampirismStateChanged(bool abIsVampire) native
 
 ; Sets the specified actor value
 Function SetActorValue(string asValueName, float afValue) native
@@ -721,6 +744,10 @@ EndEvent
 Event OnLocationChange(Location akOldLoc, Location akNewLoc)
 EndEvent
 
+; Received when the lycanthropy state of this actor changes (when SendLycanthropyStateChanged is called)
+Event OnLycanthropyStateChanged(bool abIsWerewolf)
+EndEvent
+
 ; Event received when this actor equips something - akReference may be None if object is not persistent
 Event OnObjectEquipped(Form akBaseObject, ObjectReference akReference)
 EndEvent
@@ -753,6 +780,18 @@ EndEvent
 
 ; Received immediately after the player has loaded a save game. A good time to check for additional content.
 Event OnPlayerLoadGame()
+EndEvent
+
+; Received when the player finishes fast travel, gives the duration of game time the travel took
+Event OnPlayerFastTravelEnd(float afTravelGameTimeHours)
+EndEvent
+
+; Received when StartVampireFeed is called on an actor
+Event OnVampireFeed(Actor akTarget)
+EndEvent
+
+; Received when the vampirism state of this actor changes (when SendVampirismStateChanged is called)
+Event OnVampirismStateChanged(bool abIsVampire)
 EndEvent
 
 ; Set of read-only properties to essentually make a fake enum for critical stages
@@ -819,3 +858,123 @@ Function ForceTargetAngle(float afXAngle = 0.0, float afYAngle = 0.0, float afZA
 
 ; Clears any forced movement on the actor and return it to its standard state
 Function ClearForcedMovement() native
+
+
+; SKSE64 additions built 2022-09-21 00:46:55.729000 UTC
+; returns the form for the item worn at the specified slotMask
+; use Armor.GetMaskForSlot() to generate appropriate slotMask
+Form Function GetWornForm(int slotMask) native
+
+; returns the itemId for the item worn at the specified slotMask
+int Function GetWornItemId(int slotMask) native
+
+; returns the object currently equipped in the specified location
+; 0 - left hand
+; 1 - right hand
+; 2 - shout
+Form Function GetEquippedObject(int location) native
+
+; returns the itemId of the object currently equipped in the specified hand
+; 0 - left hand
+; 1 - right hand
+int Function GetEquippedItemId(int location) native
+
+; returns the number of added spells for the actor
+Int Function GetSpellCount() native
+
+; returns the specified added spell for the actor
+Spell Function GetNthSpell(int n) native
+
+; Updates an Actors meshes (Used for Armor mesh/texture changes and face changes)
+; DO NOT USE WHILE MOUNTED
+Function QueueNiNodeUpdate() native
+
+; Updates an Actors head mesh
+Function RegenerateHead() native
+
+int Property EquipSlot_Default = 0 AutoReadOnly
+int Property EquipSlot_RightHand = 1 AutoReadOnly
+int Property EquipSlot_LeftHand = 2 AutoReadOnly
+
+; equips item at the given slot
+Function EquipItemEx(Form item, int equipSlot = 0, bool preventUnequip = false, bool equipSound = true) native
+
+; equips item with matching itemId at the given slot
+Function EquipItemById(Form item, int itemId, int equipSlot = 0, bool preventUnequip = false, bool equipSound = true) native
+
+; unequips item at the given slot
+Function UnequipItemEx(Form item, int equipSlot = 0, bool preventEquip = false) native
+
+; Adds a headpart, if the type exists it will replace, must not be misc type
+; Beware: This function also affects the ActorBase
+Function ChangeHeadPart(HeadPart hPart) native
+
+; Replaces a headpart on the loaded mesh does not affect ActorBase
+; Both old and new must exist, and be of the same type
+Function ReplaceHeadPart(HeadPart oPart, HeadPart newPart) native
+
+; Visually updates the actors weight
+; neckDelta = (oldWeight / 100) - (newWeight / 100)
+; Neck changes are player persistent, but actor per-session
+; Weight itself is persistent either way so keep track of your 
+; original weight if you use this for Actors other than the player
+; DO NOT USE WHILE MOUNTED
+Function UpdateWeight(float neckDelta) native
+
+; Returns whether the actors AI is enabled
+bool Function IsAIEnabled() native
+
+; Resets Actor AI
+Function ResetAI() native
+
+; Returns whether the actor is currently swimming
+bool Function IsSwimming() native
+
+; Sheathes the actors weapon
+Function SheatheWeapon() native
+
+; Returns the reference of the furniture the actor is currently using
+ObjectReference Function GetFurnitureReference() native
+
+; 0 - "Aah"
+; 1 - "BigAah"
+; 2 - "BMP"
+; 3 - "ChJSh"
+; 4 - "DST"
+; 5 - "Eee"
+; 6 - "Eh"
+; 7 - "FV"
+; 8 - "I"
+; 9 - "K"
+; 10 - "N"
+; 11 - "Oh"
+; 12 - "OohQ"
+; 13 - "R"
+; 14 - "Th"
+; 15 - "W"
+Function SetExpressionPhoneme(int index, float value) native
+
+; 0 - "BlinkLeft"
+; 1 - "BlinkRight"
+; 2 - "BrowDownLeft"
+; 3 - "BrowDownRight"
+; 4 - "BrowInLeft"
+; 5 - "BrowInRight"
+; 6 - "BrowUpLeft"
+; 7 - "BrowUpRight"
+; 8 - "LookDown"
+; 9 - "LookLeft"
+; 10 - "LookRight"
+; 11 - "LookUp"
+; 12 - "SquintLeft"
+; 13 - "SquintRight"
+; 14 - "HeadPitch"
+; 15 - "HeadRoll"
+; 16 - "HeadYaw"
+Function SetExpressionModifier(int index, float value) native
+
+; Resets all expression, phoneme, and modifiers
+Function ResetExpressionOverrides() native
+
+; Returns all factions with the specified min and max ranks (-128 to 127) 
+Faction[] Function GetFactions(int minRank, int maxRank) native

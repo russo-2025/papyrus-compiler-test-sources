@@ -24,9 +24,15 @@ ImagespaceModifier property NMCoffinFullBlackIS Auto
 
 
 Event OnTriggerEnter(ObjectReference akActionRef)
-If(Game.getPlayer().GetRace()==WerewolfBeastRace)
+; debug.trace("DB04 TRIGGER: race is "+ Game.getPlayer().GetRace())
+If (Game.getPlayer().GetRace() == WerewolfBeastRace)
 	Return
 Endif
+
+If (Game.getPlayer().GetRace() == DLC1VampireBeastRace)
+	Return
+Endif
+
 
 if (akActionRef == Game.GetPlayer())
 	if (pInCoffin == 0)
@@ -177,3 +183,5 @@ ObjectReference Property Body  Auto
 sound Property CoffinCrashSound  Auto  
 
 race Property WerewolfBeastRace  Auto  
+
+Race Property DLC1VampireBeastRace  Auto  

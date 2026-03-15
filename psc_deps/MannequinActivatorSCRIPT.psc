@@ -29,48 +29,24 @@ Message Property MannequinArmorWeaponsMESSAGE Auto
 int Property CurrentPose =1 Auto
 {The pose the Mannequin starts in, and is currently in. DEFAULT = 1}
 
-
+bool Property bResetOnLoad = FALSE	Auto
+{ this should be set to TRUE for mannequins that start disabled and are enabled while the cell is loaded
+   DEFAULT = FALSE }
 
 EVENT OnCellLoad()
-
-	
-	;Trace("DARYL - " + self + " Waiting a bit because it's the only way to get code to run in OnCellLoad it seems")
-	wait(0.25)
-	
-	;Trace("DARYL - " + self + " Cell is loaded so running OnCellLoad()")
-	
-	;Trace("DARYL - " + self + " Enabling my AI so I can play an idle")
-;	self.EnableAI(TRUE)
-	
-	; While(Is3DLoaded() == FALSE)
-	; ;Trace("DARYL - " + self + " Waiting for my 3d to load")
-		; wait(0.25)
-	; EndWhile
-	;Trace("DARYL - " + self + " Calling EquipCurrentArmor() Function")
-	EquipCurrentArmor()
-	
-	;Trace("DARYL - " + self + " Blocking actors activation")
-	self.BlockActivation()
-	
-	;Trace("DARYL - " + self + " Moving to my linked ref")
-	self.EnableAI(TRUE)
-	MoveTo(GetLinkedRef())
-
-
-	
-	;Trace("DARYL - " + self + " Checking what pose I should be in and playing the idle")
-;	PlayCurrentPose()
-	
-	;Trace("DARYL - " + self + " Waiting for a bit to give myself time to animate to the pose")
-;	wait(0.5)
-	
-	;Trace("DARYL - " + self + " Disabling my AI so I'll freeze in place")
-	self.EnableAI(FALSE)
+;	debug.trace(self + " OnCellLoad ")
+	if IsEnabled() && !bResetOnLoad 
+		ResetPosition()
+	endif
 EndEVENT
 
-EVENT OnEnable()
-	;Trace("DARYL - " + self + " Running OnEnable() EVENT")
-	EquipCurrentArmor()
+EVENT OnLoad()
+;	debug.trace(self + " OnLoad")
+	if bResetOnLoad
+		; only do this once - for cases where mannequin is enabled in a loaded cell
+		bResetOnLoad = false
+		ResetPosition()
+	endif
 endEVENT
 
 EVENT OnActivate(ObjectReference TriggerRef)
@@ -147,6 +123,47 @@ Event OnObjectUnequipped(Form akBaseObject, ObjectReference akReference)
 	endif
 endEvent
 
+Function ResetPosition()
+; 	debug.trace(self + " ResetPosition")
+
+	;Trace("DARYL - " + self + " Waiting a bit because it's the only way to get code to run in OnCellLoad it seems")
+;	wait(0.25)
+	
+	;Trace("DARYL - " + self + " Cell is loaded so running OnCellLoad()")
+	
+	;Trace("DARYL - " + self + " Enabling my AI so I can play an idle")
+;	self.EnableAI(TRUE)
+	
+	; While(Is3DLoaded() == FALSE)
+	; ;Trace("DARYL - " + self + " Waiting for my 3d to load")
+		; wait(0.25)
+	; EndWhile
+	
+	;Trace("DARYL - " + self + " Blocking actors activation")
+	self.BlockActivation()
+	
+	;Trace("DARYL - " + self + " Moving to my linked ref")
+	self.EnableAI(TRUE)
+	; try this instead to force back into correct position
+	disable()
+	if !IsDisabled()
+		; we must have an enable parent if disable didn't work, so use the alternative method
+		MoveTo(GetLinkedRef())
+	endif
+	enable()
+
+	;Trace("DARYL - " + self + " Calling EquipCurrentArmor() Function")
+	EquipCurrentArmor()
+	
+	;Trace("DARYL - " + self + " Checking what pose I should be in and playing the idle")
+;	PlayCurrentPose()
+	
+	;Trace("DARYL - " + self + " Waiting for a bit to give myself time to animate to the pose")
+;	wait(0.5)
+	
+	;Trace("DARYL - " + self + " Disabling my AI so I'll freeze in place")
+	self.EnableAI(FALSE)
+endFunction
 
 Function PlayCurrentPose()
 	if CurrentPose == 1

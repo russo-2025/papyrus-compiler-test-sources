@@ -229,7 +229,7 @@ EndFunction
 Function Fragment_23()
 ;BEGIN CODE
 ; send courier - set by BYOHHouseBuildingScript.PlayerChangeLocation
-debug.trace(self + "stage 15 - sending intro note")
+; debug.trace(self + "stage 15 - sending intro note")
 ; create letter
 ; send intro letter
 ObjectReference newLetter = Alias_Steward.GetRef().PlaceAtMe(BYOHHouseJarlIntroLetter)
@@ -244,7 +244,7 @@ EndFunction
 Function Fragment_5()
 ;BEGIN CODE
 ; send courier - set by BYOHHouseBuilding startup stage
-debug.trace(self + "stage 20 - sending courier")
+; debug.trace(self + "stage 20 - sending courier")
 ; create letter
 ObjectReference newLetter = Alias_Steward.GetRef().PlaceAtMe(BYOHHouseJarlFriendLetter)
 ; put in alias

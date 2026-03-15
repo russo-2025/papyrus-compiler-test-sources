@@ -7,8 +7,7 @@ Function Fragment_0(ObjectReference akSpeakerRef)
 Actor akSpeaker = akSpeakerRef as Actor
 ;BEGIN CODE
 game.getplayer().removeitem(gold, HDWhiterunAlchemy.value as int)
-decoratemarker.enable()
-oldmarker.disable()
+(GetOwningQuest() as BYOHRelationshipAdoptionHousePurchase).Whiterun_EnableChildBedroomAlternative()
 ;END CODE
 EndFunction
 ;END FRAGMENT
@@ -19,8 +18,5 @@ int Property GoldAmount  Auto
 
 MiscObject Property Gold  Auto  
 
-ObjectReference Property DecorateMarker  Auto  
 
 GlobalVariable Property HDWhiterunAlchemy  Auto  
-
-ObjectReference Property oldmarker  Auto  

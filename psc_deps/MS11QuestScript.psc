@@ -66,15 +66,15 @@ EndFunction
 
 ; 77465: bad deletion of disabled corpse
 Function CheckForDeletedBody()
-	Debug.Trace("MS11: Checking for presence of bug 77465.")
+; 	Debug.Trace("MS11: Checking for presence of bug 77465.")
 	if (InitialVictimBody.GetReference() == None)
-		Debug.Trace("MS11: 77465 detected; correcting.")
+; 		Debug.Trace("MS11: 77465 detected; correcting.")
 		Actor alt = CrimeScene.GetReference().PlaceAtMe(AlternateBody) as Actor
 		alt.AddToFaction(HarmlessCorpse)
 		alt.Kill()
 		InitialVictimBody.ForceRefTo(alt)
-		Debug.Trace("MS11: Crime scene is " + CrimeScene)
-		Debug.Trace("MS11: Alt is " + alt)
+; 		Debug.Trace("MS11: Crime scene is " + CrimeScene)
+; 		Debug.Trace("MS11: Alt is " + alt)
 	endif
 EndFunction
 ; /77465

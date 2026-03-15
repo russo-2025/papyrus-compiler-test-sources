@@ -6,9 +6,17 @@ Scriptname TIF__0002725E Extends TopicInfo Hidden
 Function Fragment_0(ObjectReference akSpeakerRef)
 Actor akSpeaker = akSpeakerRef as Actor
 ;BEGIN CODE
+if pDLC1VQElderHandler.IsRunning() == 1
+pDLC1VQElderHandlerGlob.SetValue(1)
+pDLC1VQElderHandler.SetStage(200)
+endif
 GetOwningQuest().SetStage(10)
 ;END CODE
 EndFunction
 ;END FRAGMENT
 
 ;END FRAGMENT CODE - Do not edit anything between this and the begin comment
+
+Quest Property pDLC1VQElderHandler  Auto  
+
+GlobalVariable Property pDLC1VQElderHandlerGlob  Auto  

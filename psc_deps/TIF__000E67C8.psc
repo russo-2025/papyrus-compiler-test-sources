@@ -6,8 +6,8 @@ Scriptname TIF__000E67C8 Extends TopicInfo Hidden
 Function Fragment_0(ObjectReference akSpeakerRef)
 Actor akSpeaker = akSpeakerRef as Actor
 ;BEGIN CODE
-game.getplayer().removeitem(gold, HDWindhelmBedroom.value as int)
-decoratemarker.enable()
+game.getplayer().removeitem(gold, HDWindhelmChildRoom.value as int)
+(GetOwningQuest() as BYOHRelationshipAdoptionHousePurchase).Windhelm_EnableChildBedroom()
 WindhelmPlayerHouseDecorateBasic.Disable()
 ;END CODE
 EndFunction
@@ -19,6 +19,6 @@ MiscObject Property Gold  Auto
 
 ObjectReference Property DecorateMarker  Auto  
 
-GlobalVariable Property HDWindhelmBedroom  Auto  
+GlobalVariable Property HDWindhelmChildRoom  Auto  
 
 ObjectReference Property WindhelmPlayerHouseDecorateBasic  Auto  

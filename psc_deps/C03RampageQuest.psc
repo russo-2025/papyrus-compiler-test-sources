@@ -151,6 +151,9 @@ Function StartRampage()
     Game.GetPlayer().AddShout(CurrentHowl)
     Game.GetPlayer().EquipShout(CurrentHowl)
 
+    ; Let everyone know you're now a werewolf
+    Game.GetPlayer().SendLycanthropyStateChanged(true)
+
     RegisterForSingleUpdateGameTime(RampageMinutesGameTime / 60.0)
 
     HoldBlack.PopTo(FadeFromBlack)

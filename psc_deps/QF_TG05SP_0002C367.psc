@@ -36,6 +36,9 @@ TG05SPQuestScript kmyQuest = __temp as TG05SPQuestScript
 if (WerewolfQuest.IsRunning())
 	(WerewolfQuest as PlayerWerewolfChangeScript).ShiftBack()
 endif
+if (DLC1PlayerVampireQuest.IsRunning())
+	(DLC1PlayerVampireQuest as DLC1PlayerVampireChangeScript).ShiftBack()
+endif
 Alias_TG05SPMercerAlias.GetActorRef().StopCombat()
 Game.ForceFirstPerson()
 pTG05ArrowHitRef.Enable()
@@ -98,6 +101,8 @@ ImageSpaceModifier Property pStrikeandFall  Auto
 Idle Property pKnockdown  Auto  
 
 Quest Property WerewolfQuest  Auto  
+
+Quest Property DLC1PlayerVampireQuest  Auto  
 
 Sound Property pQSTTG05ArrowKnockOut2D  Auto  
 

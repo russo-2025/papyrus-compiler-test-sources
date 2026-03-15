@@ -6,7 +6,7 @@ Scriptname QF_Patch1_4_UpdateQuest_01000803 Extends Quest Hidden
 Function Fragment_0()
 ;BEGIN CODE
 ; FOR PATCH 1.4
-debug.trace("PATCH 1.4 QUEST HAS STARTED")
+; debug.trace("PATCH 1.4 QUEST HAS STARTED")
 
 ; FIX FOR MS01 GUARDS NEVER LOSING THEIR SPECIAL ARREST DIALOGUE
 If MS02.GetstageDone(5) == 1 && MS01GuardAmbushQuest.GetStageDone(100) == 0
@@ -28,11 +28,11 @@ If MGRAppOnmund01.GetStage() == 20
 endif
 
 ;FIX FOR MG06, ARMILLARY RESET BY UNCONDITIONED ONLOAD BLOCK
-Debug.Trace("Patch Script is working")
+; Debug.Trace("Patch Script is working")
 If MG06.GetStage() == 50
-	Debug.Trace("Checking State of ArmillaryRef")
+; 	Debug.Trace("Checking State of ArmillaryRef")
 	if MG06ArmillaryRef.GetState() == "initial"
-		Debug.Trace("updating state")
+; 		Debug.Trace("updating state")
 		MG06ArmillaryRef.GoToState("Position01")
 
 	endif
@@ -79,7 +79,7 @@ Location GemLoc = DA09GemContainerLocation.GetLocation()
 
 if DA09.GetStageDone(100) == false ;<--adding this if statement in Update 1.6 to fix bug introduced in 1.4
 	if GemLoc == KatariahLocation || GemLoc == DawnstarSanctuaryLocation
-	   debug.trace("Patch Quest adding DA09 Gem to Valtheim boss chest.")
+; 	   debug.trace("Patch Quest adding DA09 Gem to Valtheim boss chest.")
 	   DA09GemFixContainer.addItem(DA09Gem.GetReference())
 	endif
 endif

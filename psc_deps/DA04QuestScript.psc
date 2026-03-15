@@ -8,11 +8,13 @@ ObjectReference Property HermaeusMoraTA auto
 ObjectReference Property HermaeusMoraFX auto
 ObjectReference Property HermaeusMoraActivator auto
 ObjectReference Property HermaeusMoraCollision auto
+;DLC2HermaeusMoraFaceFXSCRIPT Property DLC2DA04HermaeusMoraFXRef001 Auto
 
 ObjectReference Property HermaeusMoraEndSpot auto
 ObjectReference Property HermaeusMoraFXAlt auto
 ObjectReference Property HermaeusMoraActivatorAlt auto
 ObjectReference Property HermaeusMoraCollisionAlt auto
+;DLC2HermaeusMoraFaceFXSCRIPT Property DLC2DA04HermaeusMoraFXRef002 Auto
 
 Spell Property Disappear auto
 
@@ -66,15 +68,26 @@ Function GotBlood(ObjectReference deadThing)
 EndFunction
 
 Function EnableHM(bool enabling)
+	DLC2DA04PropertiesScript newFX = (HermaeusMoraTA as DLC2DA04PropertiesScript)
+; 	debug.trace(self + "fx check: " + HermaeusMoraTA + ", as script " + newFX)
 	if (enabling)
 ; 		Debug.Trace("DA04: Enabling Hermaeus Mora.")
-		HermaeusMoraFX.PlayAnimation("PlayAnim02")
+		; make sure we have the DLC2 property
+		if newFX && newFX.DLC2DA04HermaeusMoraFXRef001
+			newFX.DLC2DA04HermaeusMoraFXRef001.ChangeState()
+		else
+			HermaeusMoraFX.PlayAnimation("PlayAnim02")
+		endif
 		HermaeusMoraActivator.Enable()
 		HermaeusMoraTA.Enable()
 		HermaeusMoraCollision.Enable()
 	else
 ; 		Debug.Trace("DA04: Disabling Hermaeus Mora.")
-		HermaeusMoraFX.PlayAnimation("PlayAnim01")
+		if newFX && newFX.DLC2DA04HermaeusMoraFXRef001
+			newFX.DLC2DA04HermaeusMoraFXRef001.ChangeState(false)
+		else
+			HermaeusMoraFX.PlayAnimation("PlayAnim01")
+		endif
 		HermaeusMoraActivator.Disable()
 		HermaeusMoraTA.Disable()
 		HermaeusMoraCollision.Disable()
@@ -85,6 +98,11 @@ Function MoveHM()
 	HermaeusMoraFX = HermaeusMoraFXAlt
 	HermaeusMoraActivator = HermaeusMoraActivatorAlt
 	HermaeusMoraCollision = HermaeusMoraCollisionAlt
+	DLC2DA04PropertiesScript newFX = (HermaeusMoraTA as DLC2DA04PropertiesScript)
+; 	debug.trace(self + "fx check: " + HermaeusMoraTA + ", as script " + newFX)
+	if newFX
+		newFX.DLC2DA04HermaeusMoraFXRef001 = newFX.DLC2DA04HermaeusMoraFXRef002
+	endif
 	HermaeusMoraTA.MoveTo(HermaeusMoraEndSpot)
 EndFunction
 

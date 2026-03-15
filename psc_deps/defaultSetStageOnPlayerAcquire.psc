@@ -10,12 +10,14 @@ int Property StageToSet auto
 	
 auto State waiting	
 	Event OnContainerChanged(ObjectReference akNewContainer, ObjectReference akOldContainer)
+; 		Debug.Trace("OnContainerChanged received.")
 		if (Game.GetPlayer() == akNewContainer)
 			Quest qst = myQST
 			if (qst == None)
 				qst = GetOwningQuest()
 			endif
 			if ( (preReqStage == -1) || (qst.GetStageDone(preReqStage) == True) )
+; 				Debug.Trace("Stage set.")
 				qst.SetStage(stageToSet)
 				GoToState("inactive")
 			endif

@@ -5,4 +5,8 @@ ScriptName VampireQuestScript extends Quest Conditional
 ;1 = Vampire
 ;2 = Vampire Mid-Point
 ;3 = Full Vampire
+
 Int Property VampireStatus Auto Conditional
+
+SPELL Property LastLeftHandSpell  Auto  
+SPELL Property LastPower  Auto  

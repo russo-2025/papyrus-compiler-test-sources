@@ -2,39 +2,14 @@
 ;NEXT FRAGMENT INDEX 39
 Scriptname QF_TG08_00021554 Extends Quest Hidden
 
-;BEGIN ALIAS PROPERTY TG08BExitMarkerAlias
-;ALIAS PROPERTY TYPE ReferenceAlias
-ReferenceAlias Property Alias_TG08BExitMarkerAlias Auto
-;END ALIAS PROPERTY
-
 ;BEGIN ALIAS PROPERTY BrynjolfAlias
 ;ALIAS PROPERTY TYPE ReferenceAlias
 ReferenceAlias Property Alias_BrynjolfAlias Auto
 ;END ALIAS PROPERTY
 
-;BEGIN ALIAS PROPERTY MercerAlias
+;BEGIN ALIAS PROPERTY TG08BExitMarkerAlias
 ;ALIAS PROPERTY TYPE ReferenceAlias
-ReferenceAlias Property Alias_MercerAlias Auto
-;END ALIAS PROPERTY
-
-;BEGIN ALIAS PROPERTY TG08MeetMarkerAlias
-;ALIAS PROPERTY TYPE ReferenceAlias
-ReferenceAlias Property Alias_TG08MeetMarkerAlias Auto
-;END ALIAS PROPERTY
-
-;BEGIN ALIAS PROPERTY KarliahAlias
-;ALIAS PROPERTY TYPE ReferenceAlias
-ReferenceAlias Property Alias_KarliahAlias Auto
-;END ALIAS PROPERTY
-
-;BEGIN ALIAS PROPERTY SkeletonKeyAlias
-;ALIAS PROPERTY TYPE ReferenceAlias
-ReferenceAlias Property Alias_SkeletonKeyAlias Auto
-;END ALIAS PROPERTY
-
-;BEGIN ALIAS PROPERTY MercerSpeakerAlias
-;ALIAS PROPERTY TYPE ReferenceAlias
-ReferenceAlias Property Alias_MercerSpeakerAlias Auto
+ReferenceAlias Property Alias_TG08BExitMarkerAlias Auto
 ;END ALIAS PROPERTY
 
 ;BEGIN ALIAS PROPERTY TG08BIrkDoorAlias
@@ -42,58 +17,35 @@ ReferenceAlias Property Alias_MercerSpeakerAlias Auto
 ReferenceAlias Property Alias_TG08BIrkDoorAlias Auto
 ;END ALIAS PROPERTY
 
+;BEGIN ALIAS PROPERTY TG08MeetMarkerAlias
+;ALIAS PROPERTY TYPE ReferenceAlias
+ReferenceAlias Property Alias_TG08MeetMarkerAlias Auto
+;END ALIAS PROPERTY
+
+;BEGIN ALIAS PROPERTY MercerSpeakerAlias
+;ALIAS PROPERTY TYPE ReferenceAlias
+ReferenceAlias Property Alias_MercerSpeakerAlias Auto
+;END ALIAS PROPERTY
+
+;BEGIN ALIAS PROPERTY KarliahAlias
+;ALIAS PROPERTY TYPE ReferenceAlias
+ReferenceAlias Property Alias_KarliahAlias Auto
+;END ALIAS PROPERTY
+
+;BEGIN ALIAS PROPERTY MercerAlias
+;ALIAS PROPERTY TYPE ReferenceAlias
+ReferenceAlias Property Alias_MercerAlias Auto
+;END ALIAS PROPERTY
+
+;BEGIN ALIAS PROPERTY SkeletonKeyAlias
+;ALIAS PROPERTY TYPE ReferenceAlias
+ReferenceAlias Property Alias_SkeletonKeyAlias Auto
+;END ALIAS PROPERTY
+
 ;BEGIN FRAGMENT Fragment_38
 Function Fragment_38()
 ;BEGIN CODE
 ;Fight scene finished
-;END CODE
-EndFunction
-;END FRAGMENT
-
-;BEGIN FRAGMENT Fragment_0
-Function Fragment_0()
-;BEGIN AUTOCAST TYPE TG08BQuestScript
-Quest __temp = self as Quest
-TG08BQuestScript kmyQuest = __temp as TG08BQuestScript
-;END AUTOCAST
-;BEGIN CODE
-;Debug Quest Start
-pTG00Quest.Stop()
-pTGLarceny.Start()
-pKeyQuest.SetStage(10)
-Alias_KarliahAlias.GetActorRef().Enable()
-Game.GetPlayer().AddToFaction(kmyQuest.pTG08BTGFaction)
-Alias_BrynjolfAlias.GetActorRef().moveto(kmyQuest.pTG08BBrynjolfStarterMarker)
-Alias_KarliahAlias.GetActorRef().moveto(kmyQuest.pTG08BKarliahStarterMarker)
-Alias_KarliahAlias.GetActorRef().SetOutfit(kmyQuest.pTG08BNGaleOutfit,false)
-Alias_BrynjolfAlias.GetActorRef().SetOutfit(kmyQuest.pTG08BNGaleOutfit,false)
-setstage(10)
-;END CODE
-EndFunction
-;END FRAGMENT
-
-;BEGIN FRAGMENT Fragment_27
-Function Fragment_27()
-;BEGIN AUTOCAST TYPE TG08BQuestScript
-Quest __temp = self as Quest
-TG08BQuestScript kmyQuest = __temp as TG08BQuestScript
-;END AUTOCAST
-;BEGIN CODE
-;Karliah's Follow is Restored
-Alias_KarliahAlias.GetActorRef().SetPlayerTeammate(abCanDoFavor=false)
-Alias_BrynjolfAlias.GetActorRef().SetPlayerTeammate(abCanDoFavor=false)
-kmyQuest.pTG08BKarliahAccompany = 0
-Alias_KarliahAlias.GetActorRef().EvaluatePackage()
-Alias_BrynjolfAlias.GetActorRef().EvaluatePackage()
-UnregisterForUpdate()
-;END CODE
-EndFunction
-;END FRAGMENT
-
-;BEGIN FRAGMENT Fragment_37
-Function Fragment_37()
-;BEGIN CODE
-;flood scene over
 ;END CODE
 EndFunction
 ;END FRAGMENT
@@ -121,51 +73,27 @@ SetObjectiveDisplayed (40,1)
 EndFunction
 ;END FRAGMENT
 
-;BEGIN FRAGMENT Fragment_11
-Function Fragment_11()
-;BEGIN CODE
-;Player is safe in upper cave... speak to Karliah
-SetObjectiveCompleted (50,1)
-SetObjectiveDisplayed (60,1)
-;END CODE
-EndFunction
-;END FRAGMENT
-
-;BEGIN FRAGMENT Fragment_36
-Function Fragment_36()
+;BEGIN FRAGMENT Fragment_1
+Function Fragment_1()
 ;BEGIN AUTOCAST TYPE TG08BQuestScript
 Quest __temp = self as Quest
 TG08BQuestScript kmyQuest = __temp as TG08BQuestScript
 ;END AUTOCAST
 ;BEGIN CODE
-;Mercer is dead!
-SetObjectiveCompleted (40,1)
-SetObjectiveDisplayed (45,1)
-alias_MercerAlias.getReference().placeAtMe(kmyQuest.TG08BShockwaveExplosion)
-utility.wait(0.5)
-kmyQuest.pTG08BRisingWaterRef.Activate(kmyQuest.pTG08BRisingWaterRef)
-kmyQuest.pTG08BFloodScene01.Start()
-;alias_BrynjolfAlias.getActorRef().dispelSpell(kmyQuest.TG08BSubterfugeExplosionEffect)
-kmyQuest.pTG08BBrynjolfIsCharmed = false
-;END CODE
-EndFunction
-;END FRAGMENT
-
-;BEGIN FRAGMENT Fragment_29
-Function Fragment_29()
-;BEGIN AUTOCAST TYPE TG08BQuestScript
-Quest __temp = self as Quest
-TG08BQuestScript kmyQuest = __temp as TG08BQuestScript
-;END AUTOCAST
-;BEGIN CODE
-;Player has hit Encounter Trigger 01
-Alias_KarliahAlias.GetActorRef().SetPlayerTeammate(false)
-Alias_BrynjolfAlias.GetActorRef().SetPlayerTeammate(false)
-Game.DisablePlayerControls(true,true,true,false,true,true,true,false)
-Game.SetInChargen(true, true, false)
-alias_karliahAlias.getReference().moveTo(kmyQuest.pTG08BKarliahFightMarker)
-alias_brynjolfAlias.getReference().moveTo(kmyQuest.pTG08BBrynjolfFightMarker)
-kmyQuest.pTG08BFinalScene01.Start()
+;Player is en route to Irkngthand
+pIrkngthandMapMarkerRef.AddToMap()
+SetObjectiveDisplayed (10,1)
+Alias_MercerAlias.GetActorRef().Disable()
+Alias_MercerAlias.GetActorRef().moveto(pTG08MercerStart)
+Actor Mercer = Alias_MercerAlias.GetReference() as Actor
+Mercer.RemoveFromAllFactions()
+Alias_MercerAlias.GetActorRef().AddItem(Alias_SkeletonKeyAlias.GetRef())
+Alias_MercerAlias.GetActorRef().AddItem(pTGLarcenyEye.GetRef())
+Alias_MercerAlias.GetActorRef().SetOutfit(pMercerFreyKillOutfit,false)
+kmyQuest.pTG08BMonsterDisablerRef.Disable()
+RegisterForSingleUpdate(1)
+kmyQuest.pTG08BridgeEnableRef.enable()
+kmyQuest.pTG08bIrkngthandLockedDoorRef.lock(false)
 ;END CODE
 EndFunction
 ;END FRAGMENT
@@ -184,6 +112,22 @@ RegisterForUpdate(5)
 kmyQuest.pTG08BKarliahAccompany = 1
 Alias_KarliahAlias.GetActorRef().EvaluatePackage()
 Alias_BrynjolfAlias.GetActorRef().EvaluatePackage()
+;END CODE
+EndFunction
+;END FRAGMENT
+
+;BEGIN FRAGMENT Fragment_11
+Function Fragment_11()
+;BEGIN AUTOCAST TYPE TG08BQuestScript
+Quest __temp = self as Quest
+TG08BQuestScript kmyQuest = __temp as TG08BQuestScript
+;END AUTOCAST
+;BEGIN CODE
+;Player is safe in upper cave... speak to Karliah
+SetObjectiveCompleted (50,1)
+SetObjectiveDisplayed (60,1)
+
+kmyQuest.VampUnlock()
 ;END CODE
 EndFunction
 ;END FRAGMENT
@@ -215,36 +159,41 @@ Game.GetPlayer().moveto(pTG08BPlayerDebugFinalStart)
 EndFunction
 ;END FRAGMENT
 
-;BEGIN FRAGMENT Fragment_30
-Function Fragment_30()
+;BEGIN FRAGMENT Fragment_4
+Function Fragment_4()
 ;BEGIN AUTOCAST TYPE TG08BQuestScript
 Quest __temp = self as Quest
 TG08BQuestScript kmyQuest = __temp as TG08BQuestScript
 ;END AUTOCAST
 ;BEGIN CODE
-;The Fight Intro with the first earthquake has ended
-kmyQuest.pTG08BRisingWaterRef.Activate(kmyQuest.pTG08BRisingWaterRef)
-utility.wait(2.0)
-Alias_MercerAlias.GetActorRef().EvaluatePackage()
-Alias_KarliahAlias.GetActorRef().EvaluatePackage()
-Alias_BrynjolfAlias.GetActorRef().EvaluatePackage()
+;Player spoke to Karliah and is now leading the group into the dungeon
+Alias_KarliahAlias.GetActorRef().SetPlayerTeammate(abCanDoFavor=false)
+Alias_BrynjolfAlias.GetActorRef().SetPlayerTeammate(abCanDoFavor=false)
+SetObjectiveCompleted (20,1)
+SetObjectiveDisplayed (30,1)
+UnregisterForUpdate()
+
+if kmyQuest.pTG08BKarliahFG01 == 0
+kmyQuest.pTG08BKarliahFG01 = 1
+endif
 ;END CODE
 EndFunction
 ;END FRAGMENT
 
-;BEGIN FRAGMENT Fragment_10
-Function Fragment_10()
+;BEGIN FRAGMENT Fragment_27
+Function Fragment_27()
 ;BEGIN AUTOCAST TYPE TG08BQuestScript
 Quest __temp = self as Quest
 TG08BQuestScript kmyQuest = __temp as TG08BQuestScript
 ;END AUTOCAST
 ;BEGIN CODE
-;Skeleton Key has been obtained, need to escape dungeon as it floods
-Game.GetPlayer().AddPerk(pSkeletonKeyPerk)
-SetObjectiveCompleted (45,1)
-SetObjectiveDisplayed (50,1)
+;Karliah's Follow is Restored
+Alias_KarliahAlias.GetActorRef().SetPlayerTeammate(abCanDoFavor=false)
+Alias_BrynjolfAlias.GetActorRef().SetPlayerTeammate(abCanDoFavor=false)
+kmyQuest.pTG08BKarliahAccompany = 0
 Alias_KarliahAlias.GetActorRef().EvaluatePackage()
 Alias_BrynjolfAlias.GetActorRef().EvaluatePackage()
+UnregisterForUpdate()
 ;END CODE
 EndFunction
 ;END FRAGMENT
@@ -267,27 +216,85 @@ stop()
 EndFunction
 ;END FRAGMENT
 
-;BEGIN FRAGMENT Fragment_1
-Function Fragment_1()
+;BEGIN FRAGMENT Fragment_30
+Function Fragment_30()
 ;BEGIN AUTOCAST TYPE TG08BQuestScript
 Quest __temp = self as Quest
 TG08BQuestScript kmyQuest = __temp as TG08BQuestScript
 ;END AUTOCAST
 ;BEGIN CODE
-;Player is en route to Irkngthand
-pIrkngthandMapMarkerRef.AddToMap()
-SetObjectiveDisplayed (10,1)
-Alias_MercerAlias.GetActorRef().Disable()
-Alias_MercerAlias.GetActorRef().moveto(pTG08MercerStart)
-Actor Mercer = Alias_MercerAlias.GetReference() as Actor
-Mercer.RemoveFromAllFactions()
-Alias_MercerAlias.GetActorRef().AddItem(Alias_SkeletonKeyAlias.GetRef())
-Alias_MercerAlias.GetActorRef().AddItem(pTGLarcenyEye.GetRef())
-Alias_MercerAlias.GetActorRef().SetOutfit(pMercerFreyKillOutfit,false)
-kmyQuest.pTG08BMonsterDisablerRef.Disable()
-RegisterForSingleUpdate(1)
-kmyQuest.pTG08BridgeEnableRef.enable()
-kmyQuest.pTG08bIrkngthandLockedDoorRef.lock(false)
+;The Fight Intro with the first earthquake has ended
+kmyQuest.pTG08BRisingWaterRef.Activate(kmyQuest.pTG08BRisingWaterRef)
+utility.wait(2.0)
+Alias_MercerAlias.GetActorRef().EvaluatePackage()
+Alias_KarliahAlias.GetActorRef().EvaluatePackage()
+Alias_BrynjolfAlias.GetActorRef().EvaluatePackage()
+;END CODE
+EndFunction
+;END FRAGMENT
+
+;BEGIN FRAGMENT Fragment_29
+Function Fragment_29()
+;BEGIN AUTOCAST TYPE TG08BQuestScript
+Quest __temp = self as Quest
+TG08BQuestScript kmyQuest = __temp as TG08BQuestScript
+;END AUTOCAST
+;BEGIN CODE
+;Player has hit Encounter Trigger 01
+Alias_KarliahAlias.GetActorRef().SetPlayerTeammate(false)
+Alias_BrynjolfAlias.GetActorRef().SetPlayerTeammate(false)
+Game.DisablePlayerControls(true,true,true,false,true,true,true,false)
+Game.SetInChargen(true, true, false)
+alias_karliahAlias.getReference().moveTo(kmyQuest.pTG08BKarliahFightMarker)
+alias_brynjolfAlias.getReference().moveTo(kmyQuest.pTG08BBrynjolfFightMarker)
+kmyQuest.pTG08BFinalScene01.Start()
+;END CODE
+EndFunction
+;END FRAGMENT
+
+;BEGIN FRAGMENT Fragment_37
+Function Fragment_37()
+;BEGIN CODE
+;flood scene over
+;END CODE
+EndFunction
+;END FRAGMENT
+
+;BEGIN FRAGMENT Fragment_0
+Function Fragment_0()
+;BEGIN AUTOCAST TYPE TG08BQuestScript
+Quest __temp = self as Quest
+TG08BQuestScript kmyQuest = __temp as TG08BQuestScript
+;END AUTOCAST
+;BEGIN CODE
+;Debug Quest Start
+pTG00Quest.Stop()
+pTGLarceny.Start()
+pKeyQuest.SetStage(10)
+Alias_KarliahAlias.GetActorRef().Enable()
+Game.GetPlayer().AddToFaction(kmyQuest.pTG08BTGFaction)
+Alias_BrynjolfAlias.GetActorRef().moveto(kmyQuest.pTG08BBrynjolfStarterMarker)
+Alias_KarliahAlias.GetActorRef().moveto(kmyQuest.pTG08BKarliahStarterMarker)
+Alias_KarliahAlias.GetActorRef().SetOutfit(kmyQuest.pTG08BNGaleOutfit,false)
+Alias_BrynjolfAlias.GetActorRef().SetOutfit(kmyQuest.pTG08BNGaleOutfit,false)
+setstage(10)
+;END CODE
+EndFunction
+;END FRAGMENT
+
+;BEGIN FRAGMENT Fragment_10
+Function Fragment_10()
+;BEGIN AUTOCAST TYPE TG08BQuestScript
+Quest __temp = self as Quest
+TG08BQuestScript kmyQuest = __temp as TG08BQuestScript
+;END AUTOCAST
+;BEGIN CODE
+;Skeleton Key has been obtained, need to escape dungeon as it floods
+Game.GetPlayer().AddPerk(pSkeletonKeyPerk)
+SetObjectiveCompleted (45,1)
+SetObjectiveDisplayed (50,1)
+Alias_KarliahAlias.GetActorRef().EvaluatePackage()
+Alias_BrynjolfAlias.GetActorRef().EvaluatePackage()
 ;END CODE
 EndFunction
 ;END FRAGMENT
@@ -304,23 +311,23 @@ SetObjectiveDisplayed (20,1)
 EndFunction
 ;END FRAGMENT
 
-;BEGIN FRAGMENT Fragment_4
-Function Fragment_4()
+;BEGIN FRAGMENT Fragment_36
+Function Fragment_36()
 ;BEGIN AUTOCAST TYPE TG08BQuestScript
 Quest __temp = self as Quest
 TG08BQuestScript kmyQuest = __temp as TG08BQuestScript
 ;END AUTOCAST
 ;BEGIN CODE
-;Player spoke to Karliah and is now leading the group into the dungeon
-Alias_KarliahAlias.GetActorRef().SetPlayerTeammate(abCanDoFavor=false)
-Alias_BrynjolfAlias.GetActorRef().SetPlayerTeammate(abCanDoFavor=false)
-SetObjectiveCompleted (20,1)
-SetObjectiveDisplayed (30,1)
-UnregisterForUpdate()
-
-if kmyQuest.pTG08BKarliahFG01 == 0
-kmyQuest.pTG08BKarliahFG01 = 1
-endif
+;Mercer is dead!
+kmyQuest.VampLock()
+SetObjectiveCompleted (40,1)
+SetObjectiveDisplayed (45,1)
+alias_MercerAlias.getReference().placeAtMe(kmyQuest.TG08BShockwaveExplosion)
+utility.wait(0.5)
+kmyQuest.pTG08BRisingWaterRef.Activate(kmyQuest.pTG08BRisingWaterRef)
+kmyQuest.pTG08BFloodScene01.Start()
+;alias_BrynjolfAlias.getActorRef().dispelSpell(kmyQuest.TG08BSubterfugeExplosionEffect)
+kmyQuest.pTG08BBrynjolfIsCharmed = false
 ;END CODE
 EndFunction
 ;END FRAGMENT

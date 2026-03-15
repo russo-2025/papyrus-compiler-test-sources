@@ -10,6 +10,7 @@ Actor akSpeaker = akSpeakerRef as Actor
 If !(akspeaker.IsInFaction(DismissedFollowerFaction))
   (pDialogueFollower as DialogueFollowerScript).DismissFollower(0, 0)
 EndIf
+akSpeaker.AddToFaction(JobMerchantFaction)
 ;END CODE
 EndFunction
 ;END FRAGMENT
@@ -19,3 +20,5 @@ EndFunction
 quest Property pDialogueFollower  Auto  
 
 Faction Property DismissedFollowerFaction  Auto  
+
+Faction Property JobMerchantFaction  Auto  

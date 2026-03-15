@@ -128,3 +128,13 @@ Function ActivateAllEnemies()
 		ActivateNextEnemy()
 	EndWhile
 EndFunction
+
+Function ActivateAndKillAllEnemies()
+; 	;Debug.Trace("Activate All Enemies called.")
+	int i = 0
+	While(i < totalEnemies)
+		(BattleManager.GetNthLinkedRef(i).GetLinkedRef(EnemyLinkKeyword) as Actor).Activate(Self)
+		(BattleManager.GetNthLinkedRef(i).GetLinkedRef(EnemyLinkKeyword) as Actor).Kill()
+		i = i + 1
+	EndWhile
+EndFunction

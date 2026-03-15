@@ -6,7 +6,7 @@ Scriptname TIF__000CCBA8 Extends TopicInfo Hidden
 Function Fragment_0(ObjectReference akSpeakerRef)
 Actor akSpeaker = akSpeakerRef as Actor
 ;BEGIN CODE
-(GetOwningQuest() as RelationshipMarriageSpouseHouseScript).MoveSpouse(akspeaker, WhiterunHouse)
+(GetOwningQuest() as RelationshipMarriageSpouseHouseScript).MoveSpouse(akspeaker, FalkreathHouse)
 ;END CODE
 EndFunction
 ;END FRAGMENT
@@ -22,3 +22,5 @@ ReferenceAlias Property MarkarthHouse  Auto
 ReferenceAlias Property RiftenHouse  Auto  
 
 ReferenceAlias Property WhiterunHouse  Auto  
+
+ReferenceAlias Property FalkreathHouse  Auto  

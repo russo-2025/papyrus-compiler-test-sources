@@ -360,6 +360,10 @@ EndEvent
 Event OnLocationChange(Location akOldLoc, Location akNewLoc)
 EndEvent
 
+; Received when the lycanthropy state of this actor changes (when SendLycanthropyStateChanged is called)
+Event OnLycanthropyStateChanged(bool abIsWerewolf)
+EndEvent
+
 ; Event received when this actor equips something - akReference may be None if object is not persistent (only if this alias points at an actor)
 Event OnObjectEquipped(Form akBaseObject, ObjectReference akReference)
 EndEvent
@@ -393,6 +397,18 @@ EndEvent
 Event OnPlayerBowShot(Weapon akWeapon, Ammo akAmmo, float afPower, bool abSunGazing)
 EndEvent
 
+; Received when the player finishes fast travel, gives the duration of game time the travel took
+Event OnPlayerFastTravelEnd(float afTravelGameTimeHours)
+EndEvent
+
 ; Received immediately after the player has loaded a save game. A good time to check for additional content.
 Event OnPlayerLoadGame()
+EndEvent
+
+; Received when StartVampireFeed is called on an actor
+Event OnVampireFeed(Actor akTarget)
+EndEvent
+
+; Received when the vampirism state of this actor changes (when SendVampirismStateChanged is called)
+Event OnVampirismStateChanged(bool abIsVampire)
 EndEvent

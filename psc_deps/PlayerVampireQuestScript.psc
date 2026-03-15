@@ -54,7 +54,9 @@ Event OnUpdateGameTime()
 	
 	
 	;Vampire progression should not happen if player is in combat or controls are locked or the player can't fast travel 
-	If  Game.IsMovementControlsEnabled() && Game.IsFightingControlsEnabled() && Game.GetPlayer().GetCombatState() == 0
+	; DLC01 - also skip progression if player is currently vampire lord
+	actor player = Game.GetPlayer()
+	If  Game.IsMovementControlsEnabled() && Game.IsFightingControlsEnabled() && player.GetCombatState() == 0 && player.HasMagicEffect(DLC1VampireChangeEffect) == false && player.HasMagicEffect(DLC1VampireChangeFXEffect) == false
 		;If player hasn't fed, progress Vampirism
 		If (FeedTimer >= 3) && (VampireStatus == 3)
 			;add Stage 4 Vampire buffs and spells
@@ -63,17 +65,22 @@ Event OnUpdateGameTime()
 			VampireStage4Message.Show()
 			VampireStatus = 4
 			VampireProgression(Game.GetPlayer(), 4)
+			;/ REMOVING HATE ON LEVEL 4 VAMPIRE
 			;All NPCs  hate the evil Vampire
 			Game.GetPlayer().AddtoFaction(VampirePCFaction)
 			Game.GetPlayer().SetAttackActorOnSight()
 
 			int cfIndex = 0
+; 			Debug.Trace("VAMPIRE update: DLC1CrimeFactions = " + DLC1CrimeFactions)
+; 			Debug.Trace("VAMPIRE update: CrimeFactions before = " + CrimeFactions)
+			CrimeFactions = DLC1CrimeFactions
+; 			Debug.Trace("VAMPIRE update: CrimeFactions after = " + CrimeFactions)
    			while (cfIndex < CrimeFactions.GetSize())
-;         			Debug.Trace("VAMPIRE: Setting enemy flag on " + CrimeFactions.GetAt(cfIndex))
-        			(CrimeFactions.GetAt(cfIndex) as Faction).SetPlayerEnemy()
-        			cfIndex += 1
-    			endwhile
-
+;          		Debug.Trace("VAMPIRE update: Setting enemy flag on " + CrimeFactions.GetAt(cfIndex))
+        		(CrimeFactions.GetAt(cfIndex) as Faction).SetPlayerEnemy()
+        		cfIndex += 1
+    		endwhile
+			/;
 			;stop checking GameTime until the player feeds again
 			UnregisterforUpdateGameTime()
 		ElseIf FeedTimer >= 2 && (VampireStatus == 2)
@@ -159,6 +166,17 @@ Function VampireChange(Actor Target)
 	Target.RemoveSpell(DiseaseRockjoint )
 	Target.RemoveSpell(DiseaseWitbane )
 	Target.RemoveSpell(DiseasePorphyricHemophelia)
+	Target.RemoveSpell(DiseaseAtaxia)
+
+	;Clear player's trap diseases
+	;VampireCureDisease.Cast(Target)
+	Target.RemoveSpell(TrapDiseaseBoneBreakFever)
+	Target.RemoveSpell(TrapDiseaseBrainRot )
+	Target.RemoveSpell(TrapDiseaseRattles )
+	Target.RemoveSpell(TrapDiseaseRockjoint )
+	Target.RemoveSpell(TrapDiseaseWitbane )
+	Target.RemoveSpell(TrapDiseasePorphyricHemophelia)
+	Target.RemoveSpell(TrapDiseaseAtaxia)
 
 	;Make player Vampire Stage 1
 	VampireStatus = 1
@@ -179,6 +197,9 @@ Function VampireChange(Actor Target)
 		VC01.SetStage(25)
 	EndIf
 	
+	;Let everyone know the player is now a vampire
+	Target.SendVampirismStateChanged(true)
+
 EndFunction
 
 Function VampireFeed()
@@ -199,17 +220,22 @@ Function VampireFeed()
 	LastFeedTime =  GameDaysPassed.Value
 	VampireStatus = 1
 	VampireProgression(Game.GetPlayer(), 1)
-	;Player is no longer hated
+
+	;Player is no longer hated. Only used for players that load DLC as a vampire
 	Game.GetPlayer().RemoveFromFaction(VampirePCFaction)
 	Game.GetPlayer().SetAttackActorOnSight(False)
 
 	int cfIndex = 0
+; 	Debug.Trace("VAMPIRE feed: DLC1CrimeFactions = " + DLC1CrimeFactions)
+; 	Debug.Trace("VAMPIRE feed: CrimeFactions before = " + CrimeFactions)
+	CrimeFactions = DLC1CrimeFactions
+; 	Debug.Trace("VAMPIRE feed: CrimeFactions after = " + CrimeFactions)
 	while (cfIndex < CrimeFactions.GetSize())
 ; 		Debug.Trace("VAMPIRE: Removing enemy flag from " + CrimeFactions.GetAt(cfIndex))
 		(CrimeFactions.GetAt(cfIndex) as Faction).SetPlayerEnemy(false)
 		cfIndex += 1
 	endwhile
-
+	
 	;Start checking GameTime again if we weren't already
 	UnregisterforUpdateGameTime()
 	RegisterForUpdateGameTime(12)
@@ -379,6 +405,7 @@ Function VampireCure(Actor Player)
 	Player.SetAttackActorOnSight(False)
 	
 	;Remove all abilities
+	Player.RemoveSpell(DLC1VampireChange)
 	Player.RemoveSpell(ABVampireSkills)
 	Player.RemoveSpell(ABVampireSkills02)	
 	Player.RemoveSpell(AbVampire01)
@@ -439,6 +466,9 @@ Function VampireCure(Actor Player)
 	;make sure Hunter's Sight is gone
 	Player.RemoveSpell(VampireHuntersSight)
 	
+	;Let everyone know the player is no longer a vampire
+	Player.SendVampirismStateChanged(false)
+	
 EndFunction
 
 Spell Property AbVampire01 Auto
@@ -493,8 +523,24 @@ Spell Property DiseaseBrainRot Auto
 Spell Property DiseaseRattles Auto
 Spell Property DiseaseRockjoint auto
 Spell Property DiseaseWitbane Auto
+;Trap Diseases that also need to be removed
+Spell Property TrapDiseaseAtaxia auto
+Spell Property TrapDiseaseBoneBreakFever Auto
+Spell Property TrapDiseaseBrainRot Auto
+Spell Property TrapDiseaseRattles Auto
+Spell Property TrapDiseaseRockjoint auto
+Spell Property TrapDiseaseWitbane Auto
+Spell Property TrapDiseasePorphyricHemophelia Auto
 
 Message Property VampireStage4Message Auto
 
 Quest Property VC01 Auto
 FormList Property CrimeFactions  Auto  
+
+SPELL Property DLC1VampireChange  Auto  
+
+FormList Property DLC1CrimeFactions  Auto  
+
+; used to check for player in vampire lord form
+MagicEffect Property DLC1VampireChangeEffect Auto
+MagicEffect Property DLC1VampireChangeFXEffect Auto

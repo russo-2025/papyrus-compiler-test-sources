@@ -37,12 +37,12 @@ Function BatTeleportTo(ObjectReference obj)
 	EndIf
 	teleportObject = obj
 	swappingHarkons = False
-	;;Debug.Trace("Begin Harkon Teleport to " + teleportObject)
+; 	;;Debug.Trace("Begin Harkon Teleport to " + teleportObject)
 	;;SelfActor.GetActorBase().SetInvulnerable(True)
 	SelfActor.SetAV("Variable06", 1)
 	SelfActor.EvaluatePackage()
 	SelfActor.DispelAllSpells()
-	;;Debug.Trace("Attempting teleport.")
+; 	;;Debug.Trace("Attempting teleport.")
 	SelfActor.DoCombatSpellApply(DLC1VQ08Bats, Self.GetActorRef())
 EndFunction
 
@@ -58,7 +58,7 @@ Function BatTeleportAndSwapTo(ObjectReference obj)
 	Else
 		newHarkon = HarkonBattleMagicFormActor
 	EndIf
-	;;Debug.Trace("Begin Harkon Swap Teleport to " + teleportObject)
+; 	;;Debug.Trace("Begin Harkon Swap Teleport to " + teleportObject)
 	;;SelfActor.GetActorBase().SetInvulnerable(True)
 	HarkonBattleMagicFormActor.SetAV("Variable06", 1)
 	HarkonBattleMagicFormActor.EvaluatePackage()
@@ -98,7 +98,7 @@ Function BatTeleportToEndMelee(ObjectReference obj)
 EndFunction
 
 Function SwapHarkons()
-	;;Debug.Trace("Swapping Harkons!")
+; 	;;Debug.Trace("Swapping Harkons!")
 	if (!initialized)
 		initialized = True
 		Initialize()
@@ -114,7 +114,7 @@ Function SwapHarkons()
 		OldActor = HarkonBattleMagicFormActor
 		SelfActor = HarkonBattleMeleeFormActor
 		((Self as ReferenceAlias) as DLC1dunHarkonBossBattle).SelfActor = HarkonBattleMeleeFormActor
-		;;Debug.Trace("Melee Form, Go!")
+; 		;;Debug.Trace("Melee Form, Go!")
 	Else
 		HarkonBattleMeleeFormActor.MoveTo(VQ08HarkonWarpMarker2)
 		HarkonBattleMagicFormActor.MoveTo(VQ08HarkonSwapMarker)
@@ -123,26 +123,26 @@ Function SwapHarkons()
 		OldActor = HarkonBattleMeleeFormActor
 		SelfActor = HarkonBattleMagicFormActor
 		((Self as ReferenceAlias) as DLC1dunHarkonBossBattle).SelfActor = HarkonBattleMagicFormActor		
-		;;Debug.Trace("Magic Form, Go!")
+; 		;;Debug.Trace("Magic Form, Go!")
 	EndIf
 	OldActor.StopCombat()
 	SelfActor.SetSubGraphFloatVariable("fdampRate", 0.02)	;Fade in the new Harkon.
 	SelfActor.SetSubGraphFloatVariable("ftoggleBlend", 0.0)
-	;;Debug.Trace("Swap complete. Self=" + Self.GetActorRef())
+; 	;;Debug.Trace("Swap complete. Self=" + Self.GetActorRef())
 	SelfActor.EvaluatePackage()
 EndFunction
 
 Function TransferAVs(Actor source, Actor destination)
-	;Debug.Trace("IN:")
-	;Debug.Trace("Source: " + source + ": " + source.GetAV("Health") + ", " + source.GetAV("Magicka") + ", " + source.GetAV("Stamina") + ", " + source.GetAV("Variable06"))
-	;Debug.Trace("Destination: " + destination + ": " + destination.GetAV("Health") + ", " + destination.GetAV("Magicka") + ", " + destination.GetAV("Stamina") + ", " + destination.GetAV("Variable06"))
+; 	;Debug.Trace("IN:")
+; 	;Debug.Trace("Source: " + source + ": " + source.GetAV("Health") + ", " + source.GetAV("Magicka") + ", " + source.GetAV("Stamina") + ", " + source.GetAV("Variable06"))
+; 	;Debug.Trace("Destination: " + destination + ": " + destination.GetAV("Health") + ", " + destination.GetAV("Magicka") + ", " + destination.GetAV("Stamina") + ", " + destination.GetAV("Variable06"))
 	
 	if (destination.GetAV("Health") > source.GetAV("Health"))
 		destination.DamageAV("Health", (-1 * (source.GetAV("Health") - destination.GetAV("Health"))))
 	Else
 		destination.RestoreAV("Health", (-1 * (source.GetAV("Health") - destination.GetAV("Health"))))
 	EndIf
-	;Debug.Trace("Outgoing Health: " + source.GetAV("Health") + " == " + destination.GetAV("Health"))
+; 	;Debug.Trace("Outgoing Health: " + source.GetAV("Health") + " == " + destination.GetAV("Health"))
 	if (destination.GetAV("Magicka") > source.GetAV("Magicka"))
 		destination.DamageAV("Magicka", (-1 * (source.GetAV("Magicka") - destination.GetAV("Magicka"))))
 	Else
@@ -154,9 +154,9 @@ Function TransferAVs(Actor source, Actor destination)
 		destination.RestoreAV("Stamina", (-1 * (source.GetAV("Stamina") - destination.GetAV("Stamina"))))
 	EndIf
 	
-	;Debug.Trace("OUT:")
-	;Debug.Trace("Source: " + source + ": " + source.GetAV("Health") + ", " + source.GetAV("Magicka") + ", " + source.GetAV("Stamina") + ", " + source.GetAV("Variable06"))
-	;Debug.Trace("Destination: " + destination + ": " + destination.GetAV("Health") + ", " + destination.GetAV("Magicka") + ", " + destination.GetAV("Stamina") + ", " + destination.GetAV("Variable06"))
+; 	;Debug.Trace("OUT:")
+; 	;Debug.Trace("Source: " + source + ": " + source.GetAV("Health") + ", " + source.GetAV("Magicka") + ", " + source.GetAV("Stamina") + ", " + source.GetAV("Variable06"))
+; 	;Debug.Trace("Destination: " + destination + ": " + destination.GetAV("Health") + ", " + destination.GetAV("Magicka") + ", " + destination.GetAV("Stamina") + ", " + destination.GetAV("Variable06"))
 	
 	destination.SetAV("Variable06", 1) ;*Always* 1 at this point, since we're in the middle of a teleport.
 	destination.SetAV("Variable07", source.GetAV("Variable07"))	

@@ -50,7 +50,7 @@ function CheckAliveCount()
 			endif
 			
 		Else
-			debug.trace(self + "CheckSpecificActor (" + CheckSpecificActor + ") is not dead, so not setting stage.")
+; 			debug.trace(self + "CheckSpecificActor (" + CheckSpecificActor + ") is not dead, so not setting stage.")
 		
 		EndIf
 	Else

@@ -6,7 +6,7 @@ Scriptname DLC1_QF_Patch1_6_UpdateQuest_0100097F Extends Quest Hidden
 Function Fragment_0()
 ;BEGIN CODE
 ; FOR PATCH 1.6
-debug.trace("PATCH 1.6 QUEST HAS STARTED")
+; debug.trace("PATCH 1.6 QUEST HAS STARTED")
 
 ; 81462 -- making sure player can't use Hircine's Ring if he's not a werewolf
 if (Game.GetPlayer().HasSpell(HircinesRingPower) && !C00.PlayerHasBeastBlood)

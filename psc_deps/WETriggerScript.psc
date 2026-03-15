@@ -90,7 +90,7 @@ CWScript Property CWs Auto Hidden
 Event OnInit()
 
 	if !myHoldLocation
-		debug.MessageBox(self + "WARNING: OnInit() myHoldLocation property has not been set, this will result in errors.")
+;		debug.MessageBox(self + "WARNING: OnInit() myHoldLocation property has not been set, this will result in errors.")
 ; 		debug.trace(self + "WARNING: OnInit() myHoldLocation property has not been set, this will result in errors.", 2)
 	EndIf
 
@@ -218,7 +218,7 @@ ObjectReference Function getMyHoldFactionControllerMarker()
 		EndIf
 		
 	Else
-		debug.MessageBox(self + "WARNING: getMyHoldFactionControllerMarker() myHoldOwner property expected to be 1 or 2, instead have:" + myHoldOwner)
+;		debug.MessageBox(self + "WARNING: getMyHoldFactionControllerMarker() myHoldOwner property expected to be 1 or 2, instead have:" + myHoldOwner)
 ; 		debug.trace(self + "WARNING: getMyHoldFactionControllerMarker() myHoldOwner property expected to be 1 or 2, instead have:" + myHoldOwner, 2)
 		return None
 	EndIf

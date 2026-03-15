@@ -7,13 +7,9 @@ Function Fragment_0(ObjectReference akSpeakerRef)
 Actor akSpeaker = akSpeakerRef as Actor
 ;BEGIN CODE
 pDLC1VQ04DLink03.SetValue(1)
-;if (((self as Form) as DLC1DoOnce).DoOnce())
-;    (GetOwningQuest() as DLC1VQ04QuestScript).MM.IncreaseGuarded()
-;endif
-if( (GetOwningQuest() as DLC1VQ04QuestScript).MM.VQ04Guarded == False )
-	(GetOwningQuest() as DLC1VQ04QuestScript).MM.IncreaseGuarded()
-	(GetOwningQuest() as DLC1VQ04QuestScript).MM.SetVQ04Guarded()
-EndIf
+if (((self as Form) as DLC1DoOnce).DoOnce())
+    (GetOwningQuest() as DLC1VQ04QuestScript).MM.IncreaseGuarded()
+endif
 ;END CODE
 EndFunction
 ;END FRAGMENT

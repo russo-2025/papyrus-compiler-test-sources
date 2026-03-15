@@ -2,6 +2,22 @@
 ;NEXT FRAGMENT INDEX 2
 Scriptname SF_DB09MaroAmbushScene_00064269 Extends Scene Hidden
 
+;BEGIN FRAGMENT Fragment_1
+Function Fragment_1()
+;BEGIN CODE
+if (PlayerWerewolfQuest.IsRunning())
+	(PlayerWerewolfQuest as PlayerWerewolfChangeScript).ShiftBack()
+endif
+if (DLC1PlayerVampireQuest.IsRunning())
+	DLC1RevertForm.Cast(Game.GetPlayer(), Game.GetPlayer() )
+;	(DLC1PlayerVampireQuest as DLC1PlayerVampireChangeScript).ShiftBack()
+endif
+Game.DisablePlayerControls()
+HaafingarFaction.ModCrimeGold(1500)
+;END CODE
+EndFunction
+;END FRAGMENT
+
 ;BEGIN FRAGMENT Fragment_0
 Function Fragment_0()
 ;BEGIN CODE
@@ -16,18 +32,6 @@ pAmbushGuard3Alias.GetActorRef().StartCombat(Game.GetPlayer())
 pAmbushGuard3Alias.GetActorRef().AddToFaction(DBAttackPlayerFaction)
 DB09.SetStage(70)
 ;pMaroAlias.GetReference().Disable()
-;END CODE
-EndFunction
-;END FRAGMENT
-
-;BEGIN FRAGMENT Fragment_1
-Function Fragment_1()
-;BEGIN CODE
-if (PlayerWerewolfQuest.IsRunning())
-	(PlayerWerewolfQuest as PlayerWerewolfChangeScript).ShiftBack()
-endif
-Game.DisablePlayerControls()
-HaafingarFaction.ModCrimeGold(1500)
 ;END CODE
 EndFunction
 ;END FRAGMENT
@@ -48,4 +52,8 @@ Faction Property DBAttackPlayerFaction  Auto
 
 Quest Property PlayerWerewolfQuest  Auto  
 
+Quest Property DLC1PlayerVampireQuest  Auto  
+
 Faction Property HaafingarFaction  Auto  
+
+SPELL Property DLC1RevertForm  Auto  

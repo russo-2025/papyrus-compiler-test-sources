@@ -38,8 +38,16 @@ ImpactDataSet Property FXDragonLandingImpactSet Auto
 ImpactDataSet Property FXDragonTailstompImpactSet Auto
 {Impact data set to use for the tailstomp}
 
+
+;*****ADDED FOR DLC2--------------
+bool MiraakIntroductionHappened
+bool MiraakAppeared
+Location Property DLC2ApocryphaLocation Auto
+WorldSpace Property DLC2ApocryphaWorld auto
+;*****----------------------------
+
 ; _____________
-;|			    |
+;|			   |
 ;|    EVENTS   |
 ;|_____________|
 	EVENT onInit()
@@ -101,7 +109,7 @@ Event OnLocationChange(Location akOldLoc, Location akNewLoc)
 	;USED TO GET DIALOGUE CONDITIONED ON DRAGON HAVING ATTACKED A TOWN	-- only happens if he lands on the ground in a location - ie death, or to land to fight (not on a perch)
 	;see also DragonPerchScript
 
-	debug.trace(self + "OnLocationChange() calling WI.RegisterDragonAttack(" +akNewLoc + ")")
+; 	debug.trace(self + "OnLocationChange() calling WI.RegisterDragonAttack(" +akNewLoc + ")")
 	WI.RegisterDragonAttack(akNewLoc, self)
 	
 	if !isDead() && isGhost()
@@ -125,37 +133,37 @@ STATE alive
 	endEvent
 	
 	EVENT onAnimationEvent(objectReference deliverator, string eventName)
-		debug.trace("AnimEvent: " + eventName + " delivered by Dragon ("+self+") ")
+; 		debug.trace("AnimEvent: " + eventName + " delivered by Dragon ("+self+") ")
 		if (eventName == "DragonLandEffect")
-			;debug.trace("Dragon AnimPayLoad: DragonLandEffect")
+; 			;debug.trace("Dragon AnimPayLoad: DragonLandEffect")
 			game.shakeCamera(self, 1)
 			game.shakeController(95, 95, 2)
 			KnockAreaEffect(1, getLength())
 			animateFOV()								; call the FOV function
 			PlayImpactEffect(FXDragonTakeoffImpactSet, "NPC Pelvis", 0, 0, -1, 512)
 		elseIf (eventName == "DragonForcefulLandEffect")
-			;debug.trace("Dragon AnimPayLoad: DragonForcefulLandEffect")
+; 			;debug.trace("Dragon AnimPayLoad: DragonForcefulLandEffect")
 			PlayImpactEffect(FXDragonLandingImpactSet, "NPC Pelvis", 0, 0, -1, 512)
 			KnockAreaEffect(1, 2*getLength())
 			;notification ("Dragon Forceful Land Effect")
 		elseIf (eventName == "DragonTakeoffEffect")
-			debug.trace("Dragon AnimPayLoad: DragonTakeoffEffect")
+; 			debug.trace("Dragon AnimPayLoad: DragonTakeoffEffect")
 			PlayImpactEffect(FXDragonTakeoffImpactSet, "NPC Tail8", 0, 0, -1, 2048)
 		elseIf (eventName == "DragonBiteEffect")
 			;Removed spit effect on 6/1/10. Leaving logic in case we need to sub in other fx or sounds.
-			;debug.trace("Dragon ("+self+") AnimPayLoad: DragonBiteEffect")
+; 			;debug.trace("Dragon ("+self+") AnimPayLoad: DragonBiteEffect")
 			;DragonBiteFX.Play(Self, 2)
 			;notification ("Dragon Bite Effect")
 		elseIf (eventName == "DragonTailAttackEffect")
-			;debug.trace(" Dragon AnimPayoload: DragonTailAttackEffect")
+; 			;debug.trace(" Dragon AnimPayoload: DragonTailAttackEffect")
 			PlayImpactEffect(FXDragonTailstompImpactSet, "NPC Tail8", 0, 0, -1, 512)
 			;notification("Dragon Tail Attack Effect")
 		elseIf (eventName == "DragonLeftWingAttackEffect")
-			;debug.trace("Dragon AnimPayLoad: DragonLeftWingAttackEffect")
+; 			;debug.trace("Dragon AnimPayLoad: DragonLeftWingAttackEffect")
 			PlayImpactEffect(FXDragonTailstompImpactSet, "NPC LHand", 0, 0, -1, 512)
 			;notification ("Dragon Left Wing Attack Effect")
 		elseIf (eventName == "DragonRightWingAttackEffect")
-			;debug.trace("Dragon AnimPayLoad: DragonRightWingAttackEffect")
+; 			;debug.trace("Dragon AnimPayLoad: DragonRightWingAttackEffect")
 			PlayImpactEffect(FXDragonTailstompImpactSet, "NPC RHand", 0, 0, -1, 512)
 			;notification ("Dragon Right Wing Attack Effect")
 		elseIf (eventName == "DragonPassByEffect")
@@ -168,7 +176,7 @@ STATE alive
 			;FXinjuryLeaks.play(self, -1)
 		elseIf (eventName == "DragonKnockbackEvent")
 			; dragon needs to stagger everyone in radius a bit larger than my length
-			;debug.trace(self + " is knocking back actors within " + 1.5*getLength() + " of self @ " + self.x + ", " + self.y)
+; 			;debug.trace(self + " is knocking back actors within " + 1.5*getLength() + " of self @ " + self.x + ", " + self.y)
 			;self.placeAtMe(knockBackExplosion)
 			KnockAreaEffect(1, 1.5*getLength())
 			animateFOV(1.5*getLength())
@@ -176,7 +184,7 @@ STATE alive
 	endEVENT
 
 	EVENT onDeath(actor killer)
-		debug.trace("Remove mouth/injury FX art, begin death FX sequence for " + self)
+; 		debug.trace("Remove mouth/injury FX art, begin death FX sequence for " + self)
 		gotoState("deadAndWaiting")
 		
 		WI.startWIDragonKillQuest(self)		;used to create a scene if any NPCs are nearby when the dragon dies. See WIFunctionsScript attached to WI quest which creates a story manager script event, and WIDragonKilled quest which handles the scene.
@@ -187,18 +195,38 @@ STATE alive
 endSTATE
 
 STATE deadAndWaiting
+
+	;-------------------CHANGED FOR DLC2---------------------------
 	EVENT onBeginState()
-		while getDistance(player) > deathFXrange
-			utility.wait(1.0)
-		endWhile
-		debug.trace("player close enough to absorb" + self)
-		gotoState("deadDisintegrated")
-		(MQkillDragon as MQKillDragonScript).deathSequence(self)
+
+		MQKillDragonScript MQKillDragonS = MQkillDragon as MQKillDragonScript
+
+		;If in Apocrypha, this is the boss fight so do not wait for distance
+		if DLC2ApocryphaLocation && DLC2ApocryphaWorld && (game.getPlayer().isInLocation(DLC2ApocryphaLocation) || game.getPlayer().getWorldSpace() == DLC2ApocryphaWorld)
+			gotoState("deadDisintegrated")
+			MQkillDragonS.deathSequence(self)
+		elseif MQKillDragonS.ShouldMiraakAppear(self) && MiraakAppeared == false
+			gotoState("deadDisintegrated")
+; 			Debug.Trace(self + "MiraakAppears")
+			MiraakAppeared = true
+			MQkillDragonS.deathSequence(self, MiraakAppears = true)
+		else
+			;NORMAL BASE GAME BEHAVIOR
+			while getDistance(player) > deathFXrange
+				utility.wait(1.0)
+			endWhile
+; 			debug.trace("player close enough to absorb" + self)
+			gotoState("deadDisintegrated")
+			MQkillDragonS.deathSequence(self)
+
+		endif
+
 	endEVENT
-	
+	;--------------------------------------------------------------------------------------------
+
 	; EVENT onUpdate()
 		; if getDistance(player) < deathFXrange
-			; debug.trace("player close enough to absorb" + self)
+; 			; debug.trace("player close enough to absorb" + self)
 			; gotoState("deadDisintegrated")
 			; unRegisterforUpdate()
 			; (MQkillDragon as MQKillDragonScript).deathSequence(self)
@@ -222,8 +250,8 @@ function AnimateFOV(float fFOVfalloff = 1600.0)
 		if FOVpower > 1.0
 			FOVpower = 1.0		; clamp to prevent wacky values
 		endif
-		;debug.trace("player is " + playerDist + " from landing dragon")
-		;debug.trace("dragon FOV fx power is" + FOVpower)
+; 		;debug.trace("player is " + playerDist + " from landing dragon")
+; 		;debug.trace("dragon FOV fx power is" + FOVpower)
 		dragonFOVfx.apply(FOVpower) ;animated FOV effect.  Strength based on distance from player
 	endif
 endFunction

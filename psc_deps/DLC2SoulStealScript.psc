@@ -37,6 +37,8 @@ quest Property MQ104 auto
 
 Faction Property MQNoDragonAbsorb auto
 
+DLC2MiraakScript HeldMiraakRef
+
 ; for Greybeard effect
 VisualEffect Property FXGreybeardAbsorbEffect Auto
 EffectShader Property GreybeardPowerAbsorbFXS Auto
@@ -48,6 +50,7 @@ sound property NPCDragonDeathSequenceExplosion auto
 
 Event OnUpdate()
 ; 	Debug.Trace(self + "OnUpdate()")
+	
 	if MiraakStoleSoul == false
 		DLC2SoulStealScene.Stop()
 	endif
@@ -108,13 +111,15 @@ bool Function ShouldMiraakAppear(Actor DragonRef)
 EndFunction
 
 Function MiraakAppears(ObjectReference DragonRef)
-; 	Debug.Trace(self + "MiraakAppears()" + DragonRef)
+ 	Debug.Trace(self + "MiraakAppears()" + DragonRef)
 	Dragon.ForceRefTo(DragonRef)
 
-	DLC2MiraakScript MiraakRef = Miraak.GetReference() as DLC2MiraakScript
-	MiraakRef.AppearAtRef = DragonRef
-	MiraakRef.Appear()
-	MiraakRef.SetNoBleedoutRecovery(true) 
+	HeldMiraakRef = Miraak.GetReference() as DLC2MiraakScript
+	if HeldMiraakRef != None
+		HeldMiraakRef.AppearAtRef = DragonRef
+		HeldMiraakRef.Appear()
+		HeldMiraakRef.SetNoBleedoutRecovery(true) 
+	endif
 
 	;clear tracking variables from previous incarnations
 	fightPlayer = false
@@ -127,12 +132,19 @@ Function MiraakAppears(ObjectReference DragonRef)
 
 EndFunction
 
+Function DelayedMiraakAppears()
+	
+EndFunction
+
 Function MiraakDisappears()
-; 	Debug.Trace(self + "MiraakDisappears()")
-	DLC2MiraakScript MiraakRef = Miraak.GetReference() as DLC2MiraakScript
-	MiraakRef.Disappear()
-	MiraakRef.SetNoBleedoutRecovery(false)
-	MiraakRef.RestoreAV("Health", 999999999)
+ 	Debug.Trace(self + "MiraakDisappears()")
+	;DLC2MiraakScript MiraakRef = Miraak.GetReference() as DLC2MiraakScript
+	if HeldMiraakRef != None
+		HeldMiraakRef.Disappear()
+		HeldMiraakRef.SetNoBleedoutRecovery(false)
+		HeldMiraakRef.RestoreAV("Health", 999999999)
+		HeldMiraakRef = None
+	endif
 	
 	;if Miraak disappears before he stole the soul, put the dragon back in the state that lets the player steal it's soul
 	if MiraakStoleSoul == false
@@ -175,7 +187,7 @@ Function ModDLC2SoulStealCount(int amountToMod)
 EndFunction
 
 Function MiraakDetached()
-; 	Debug.Trace(self + "MiraakDetached()")
+ 	Debug.Trace(self + "MiraakDetached()")
 	if DLC2SoulStealScene.IsPlaying()
 ; 		Debug.Trace(self + "MiraakDetached() DLC2SoulStealScene is playing, calling stop()")
 		DLC2SoulStealScene.Stop()
@@ -185,7 +197,7 @@ EndFunction
 
 ;CRIBBED FROM MQGreybeardAbsorbScript "AbsorbSoul()"
 function AbsorbSoulFromMiraak(Actor target)
-; 	Debug.Trace(self + "AbsorbSoulFromMiraak()")
+ 	Debug.Trace(self + "AbsorbSoulFromMiraak()")
 
 	Actor PlayerRef = Game.GetPlayer()
 

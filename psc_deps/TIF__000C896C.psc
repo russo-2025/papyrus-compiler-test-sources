@@ -6,8 +6,8 @@ Scriptname TIF__000C896C Extends TopicInfo Hidden
 Function Fragment_0(ObjectReference akSpeakerRef)
 Actor akSpeaker = akSpeakerRef as Actor
 ;BEGIN CODE
-game.getplayer().removeitem(gold, HDRiftenBedroom.value as int)
-decoratemarker.enable()
+game.getplayer().removeitem(gold, HDRiftenChildRoom.value as int)
+(GetOwningQuest() as BYOHRelationshipAdoptionHousePurchase).Riften_EnableChildBedroom()
 ;END CODE
 EndFunction
 ;END FRAGMENT
@@ -19,4 +19,4 @@ MiscObject Property Gold  Auto
 
 int Property GoldAmount  Auto  
 
-GlobalVariable Property HDRiftenBedroom  Auto  
+GlobalVariable Property HDRiftenChildRoom  Auto  

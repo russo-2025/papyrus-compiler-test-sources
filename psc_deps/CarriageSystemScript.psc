@@ -21,10 +21,12 @@ function Travel(int iDestination = -1, Actor pDriver)
 			PlayerIsSitting()
 		endif
 	else
-		if currentDestination >= 1 && currentDestination <= 5
-			GetPlayer().RemoveItem(Gold, CarriageCost.value as int)
-		else
-			GetPlayer().RemoveItem(Gold, CarriageCostSmall.value as int)
+		if currentDriver.IsInFaction(BYOHCarriageDriverFaction) == false
+			if currentDestination >= 1 && currentDestination <= 5
+				GetPlayer().RemoveItem(Gold, CarriageCost.value as int)
+			else
+				GetPlayer().RemoveItem(Gold, CarriageCostSmall.value as int)
+			endif
 		endif
 
 		; get player to sit in marker
@@ -68,12 +70,13 @@ function PlayerIsSitting()
 	if driverScript && driverScript.bSitting
 		currentDriver.PlayIdle(IdleCartDriverIdle)
 	endif
-	if currentDestination >= 1 && currentDestination <= 5
-		player.RemoveItem(Gold, CarriageCost.value as int)
-	else
-		player.RemoveItem(Gold, CarriageCostSmall.value as int)
+	if currentDriver.IsInFaction(BYOHCarriageDriverFaction) == false
+		if currentDestination >= 1 && currentDestination <= 5
+			player.RemoveItem(Gold, CarriageCost.value as int)
+		else
+			player.RemoveItem(Gold, CarriageCostSmall.value as int)
+		endif
 	endif
-
 ;	Game.FadeOutGame(true, true, 0.5, 8)
 	currentDriver.SetActorValue("variable01", 2) ; to allow chatter
 	currentDriver.Say(DialogueCarriageChatterTopic)
@@ -117,6 +120,26 @@ function SkipToDestinationSimple()
 		FastTravel(Falkreath)
 	elseif currentDestination == 9
 		FastTravel(Winterhold)
+	elseif currentDestination == 10
+		FastTravel(DarkwaterCrossing)
+	elseif currentDestination == 11
+		FastTravel(DragonBridge)
+	elseif currentDestination == 12
+		FastTravel(Ivarstead)
+	elseif currentDestination == 13
+		FastTravel(Karthwasten)
+	elseif currentDestination == 14
+		FastTravel(Kynesgrove)
+	elseif currentDestination == 15
+		FastTravel(OldHroldan)
+	elseif currentDestination == 16
+		FastTravel(Riverwood)
+	elseif currentDestination == 17
+		FastTravel(Rorikstead)
+	elseif currentDestination == 18
+		FastTravel(ShorsStone)
+	elseif currentDestination == 19
+		FastTravel(Stonehills)
 	else
 ; 		debug.trace(self + "SkipToDestinationSimple: FAILED - bad destination")
 	endif
@@ -127,7 +150,6 @@ function SkipToDestinationSimple()
 	EnablePlayerControls()
 ; 	debug.trace(self + "SkipToDestination DONE")
 endFunction
-
 
 Keyword Property LinkCarriageSeat Auto
 
@@ -203,6 +225,17 @@ int property currentDestination auto conditional
 	Dawnstar = 7
 	Falkreath = 8
 	Winterhold = 9
+	; BYOH new destinations for house carriages
+	Darkwater Crossing = 10
+	Dragon Bridge = 11
+	Ivarstead = 12
+	Karthwasten = 13
+	Kynesgrove = 14
+	Old Hroldan = 15
+	Riverwood = 16
+	Rorikstead = 17
+	Shor's Stone = 18
+	Stonehills = 19
 }
 
 Idle property IdleCartPlayerIdle auto
@@ -533,3 +566,6 @@ ImageSpaceModifier Property FadeToBlackImod  Auto
 ImageSpaceModifier Property FadeToBlackHoldImod  Auto  
 
 ImageSpaceModifier Property FadeToBlackBackImod  Auto  
+
+Faction Property BYOHCarriageDriverFaction  Auto  
+{BYOH carriage drivers - ride for free}

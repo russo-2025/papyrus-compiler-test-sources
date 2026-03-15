@@ -7,13 +7,11 @@ Function Fragment_0(ObjectReference akSpeakerRef)
 Actor akSpeaker = akSpeakerRef as Actor
 ;BEGIN CODE
 GetOwningQuest().SetStage(10)
-(GetOwningQuest() as RelationshipMarriageSpouseHouseScript).MoveSpouse(akspeaker, WhiterunHouse)
+(GetOwningQuest() as RelationshipMarriageSpouseHouseScript).MoveSpouse(akspeaker, FalkreathHouse)
 ;END CODE
 EndFunction
 ;END FRAGMENT
 
 ;END FRAGMENT CODE - Do not edit anything between this and the begin comment
 
-ReferenceAlias Property SolitudeHouse  Auto  
-
-ReferenceAlias Property WhiterunHouse  Auto  
+ReferenceAlias Property FalkreathHouse Auto

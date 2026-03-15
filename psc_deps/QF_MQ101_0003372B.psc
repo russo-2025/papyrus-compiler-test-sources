@@ -2602,7 +2602,7 @@ SkyrimClear.ForceActive(true) ; weather override
 Utility.Wait(0.1)
 
 ; imagespace modifier
-Game.FadeOutGame(False, true, 28.0, 30.0)
+Game.FadeOutGame(False, true, 14.0, 15.0)
 
 
 

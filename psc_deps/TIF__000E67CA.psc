@@ -6,7 +6,7 @@ Scriptname TIF__000E67CA Extends TopicInfo Hidden
 Function Fragment_0(ObjectReference akSpeakerRef)
 Actor akSpeaker = akSpeakerRef as Actor
 ;BEGIN CODE
-game.getplayer().removeitem(gold, HDWindhelmArmory.value as int)
+game.getplayer().removeitem(gold, HDWindhelmBedroom.value as int)
 decoratemarker.enable()
 ;END CODE
 EndFunction
@@ -20,4 +20,4 @@ int Property GoldAmount  Auto
 
 ObjectReference Property DecorateMarker  Auto  
 
-GlobalVariable Property HDWindhelmArmory  Auto  
+GlobalVariable Property HDWindhelmBedroom  Auto  

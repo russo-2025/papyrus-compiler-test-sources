@@ -65,6 +65,7 @@ FormList Property WerewolfDispelList auto
 
 float __durationWarningTime = -1.0
 float __feedExtensionTime = -1.0
+float __gorgeExtensionTime = -1.0
 bool __tryingToShiftBack = false
 bool __shiftingBack = false
 bool __shuttingDown = false
@@ -164,6 +165,7 @@ Function StartTracking()
     ; recalc times
     __durationWarningTime = RealTimeSecondsToGameTimeDays(DurationWarningTimeSeconds)
     __feedExtensionTime   = RealTimeSecondsToGameTimeDays(FeedExtensionTimeSeconds)
+    __gorgeExtensionTime   = RealTimeSecondsToGameTimeDays(DLC1GorgingDurationSeconds)
 
     ; unequip magic
     Spell left = Game.GetPlayer().GetEquippedSpell(0)
@@ -247,6 +249,12 @@ Event OnUpdate()
     if (Untimed)
         return
     endif
+;     Debug.Trace("WEREWOLF: NumWerewolfPerks = " + Game.QueryStat("NumWerewolfPerks"))
+    if Game.QueryStat("NumWerewolfPerks") >= DLC1WerewolfMaxPerks.Value
+;         debug.trace("WEREWOLF: achievement granted")
+        Game.AddAchievement(57)
+    endif
+
     float currentTime = GameDaysPassed.GetValue()
     float regressTime = PlayerWerewolfShiftBackTime.GetValue()
 
@@ -275,7 +283,19 @@ EndFunction
 
 ; called from stage 11
 Function Feed(Actor victim)
-    float newShiftTime = PlayerWerewolfShiftBackTime.GetValue() + __feedExtensionTime
+;     Debug.Trace("WEREWOLF: start newShiftTime = " + GameTimeDaysToRealTimeSeconds(PlayerWerewolfShiftBackTime.GetValue()) + ", __feedExtensionTime = " + GameTimeDaysToRealTimeSeconds(__feedExtensionTime))
+    float newShiftTime = PlayerWerewolfShiftBackTime.GetValue() + __feedExtensionTime / 2
+    if victim.HasKeyword(ActorTypeNPC)
+        newShiftTime =newShiftTime + __feedExtensionTime / 2
+;         Debug.Trace("WEREWOLF: victim is NPC")
+    endif
+;     Debug.Trace("WEREWOLF: default newShiftTime = " + GameTimeDaysToRealTimeSeconds(newShiftTime) + ", __feedExtensionTime = " + GameTimeDaysToRealTimeSeconds(__feedExtensionTime))
+    if Game.GetPlayer().HasPerk(DLC1GorgingPerk) == 1
+        newShiftTime = newShiftTime + __GorgeExtensionTime / 2
+        if victim.HasKeyword(ActorTypeNPC)
+            newShiftTime = newShiftTime + __GorgeExtensionTime / 2
+        endif
+    endif
     Game.GetPlayer().PlayIdle(SpecialFeeding)
     
     ;This is for adding a spell that simulates bleeding
@@ -359,8 +379,10 @@ Function ActuallyShiftBackIfNecessary()
         count += 1
     endwhile
 
-    ; make sure the transition armor is gone
-    Game.GetPlayer().UnequipItem(WolfSkinFXArmor, False, True)
+    ; make sure the transition armor is gone. We RemoveItem here, because the SetRace stored all equipped items
+    ; at that time, and we equip this armor prior to setting the player to a beast race. When we switch back,
+    ; if this were still in the player's inventory it would be re-equipped.
+    Game.GetPlayer().RemoveItem(WolfSkinFXArmor, 1, True)
 
     ; clear out perks/abilities
     ;  (don't need to do this anymore since it's on from gamestart)
@@ -370,16 +392,15 @@ Function ActuallyShiftBackIfNecessary()
     ; Game.GetPlayer().GetActorBase().SetInvulnerable(true)
     Game.GetPlayer().SetGhost()
     float currHealth = Game.GetPlayer().GetAV("health")
-    if (currHealth <= 70)
+    if (currHealth <= 101)
 ;         Debug.Trace("WEREWOLF: Player's health is only " + currHealth + "; restoring.")
-        Game.GetPlayer().RestoreAV("health", 70 - currHealth)
+        Game.GetPlayer().RestoreAV("health", 101 - currHealth)
     endif
 
     ; change you back
 ;     Debug.Trace("WEREWOLF: Setting race " + (CompanionsTrackingQuest as CompanionsHousekeepingScript).PlayerOriginalRace + " on " + Game.GetPlayer())
     Game.GetPlayer().SetRace((CompanionsTrackingQuest as CompanionsHousekeepingScript).PlayerOriginalRace)
-
-    ; release the player controls
+     ; release the player controls
 ;     Debug.Trace("WEREWOLF: Restoring camera controls")
     Game.EnablePlayerControls(abMovement = false, abFighting = false, abCamSwitch = true, abLooking = false, abSneaking = false, abMenu = false, abActivate = false, abJournalTabs = false, aiDisablePOVType = 1)
     Game.ShowFirstPersonGeometry(true)
@@ -441,3 +462,17 @@ Function Shutdown()
 
     Stop()
 EndFunction
+
+Float Property DLC1GorgingDurationSeconds  Auto  
+
+Perk Property DLC1GorgingPerk  Auto  
+
+Perk Property DLC1SavageFeedingPerk  Auto  
+
+Keyword Property ActorTypeNPC  Auto  
+
+Perk Property DLC1AnimalVigor  Auto  
+
+GlobalVariable Property DLC1WerewolfTotalPerksEarned  Auto  
+
+GlobalVariable Property DLC1WerewolfMaxPerks  Auto  

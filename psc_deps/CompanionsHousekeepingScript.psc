@@ -1159,6 +1159,9 @@ Function CurePlayer()
     ; you can't get into the Underforge anymore, either
     TempUnderforgeAccess = false
     PlayerHasBeastBlood = false
+
+    ; Let everyone know you are no longer a werewolf
+    Game.GetPlayer().SendLycanthropyStateChanged(false)
 EndFunction
 
 

@@ -6,8 +6,8 @@ Scriptname TIF__00090DF8 Extends TopicInfo Hidden
 Function Fragment_1(ObjectReference akSpeakerRef)
 Actor akSpeaker = akSpeakerRef as Actor
 ;BEGIN CODE
-Game.GetPlayer().AddItem(FavorRewardGoldLarge)
-GetOwningQuest().SetStage(20)
+;Game.GetPlayer().AddItem(FavorRewardGoldLarge)
+;GetOwningQuest().SetStage(20)
 ;END CODE
 EndFunction
 ;END FRAGMENT

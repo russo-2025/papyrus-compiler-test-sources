@@ -39,3 +39,23 @@ float function GetCurrentWeatherTransition() native global
 ; 2 - Skydome only (SM_SKYDOME_ONLY)
 ; 3 - Full sky (SM_FULL)
 int function GetSkyMode() native global
+
+; SKSE64 additions built 2022-09-21 00:46:55.729000 UTC
+
+; Returns the sun glare percentage
+float Function GetSunGlare() native
+
+; Returns the sun damage percentage
+float Function GetSunDamage() native
+
+; Returns the wind direction in degrees (0-360)
+float Function GetWindDirection() native
+
+; Returns the wind direction range in degrees (0-180)
+float Function GetWindDirectionRange() native
+
+; 0 - Near
+; 1 - Far
+; 2 - Power
+; 3 - Max
+float Function GetFogDistance(bool day, int type) native

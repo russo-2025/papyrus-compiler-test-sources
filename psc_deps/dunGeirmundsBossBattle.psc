@@ -67,7 +67,7 @@ EndEvent
 Function UpdateLoop()
 	inUpdateLoop = True
 	While(!Self.GetActorRef().IsDead() && dunGeirmundsQST.GetStage() < 10 && Game.GetPlayer().GetCurrentLocation() == GeirmundsHallLocation)
-		Debug.Trace("Loop")
+; 		Debug.Trace("Loop")
 		;Duplicate based on a timer...
 		if (Utility.GetCurrentRealTime() - lastDuplicationTime >= 25)
 			Duplicate()
